@@ -6,7 +6,10 @@ public class BlockArrayManager : MonoBehaviour {
 
     public enum Arr { Empty, Block, Character}
 
-    private int[,] gameArray = new int[10, 17]; //맨 위 3칸은 안보이게 한다.
+    public const int RowCount = 10;
+    private int[,] gameArray = new int[RowCount, 17]; //맨 위 3칸은 안보이게 한다.
+
+    
 
 	// Use this for initialization
 	void Start () {
@@ -59,5 +62,10 @@ public class BlockArrayManager : MonoBehaviour {
         }
 
         return distance;
+    }
+
+    public int GetElementContent(int indexX, int indexY)
+    {
+        return gameArray[indexX, indexY];
     }
 }
