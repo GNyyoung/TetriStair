@@ -28,7 +28,7 @@ public class BlockController : MonoBehaviour {
 	}
 
     //조종중인 블럭을 회전시킨다.
-    public void RotateBlock(int direction)
+    public void RotateBlock()
     {
         Module[] fixedBlock = controlBlock;
         int standardPosX = fixedBlock[0].posX;
@@ -36,12 +36,10 @@ public class BlockController : MonoBehaviour {
 
         int outOfBorderX = 0;           //블럭이 경계 밖으로 삐져나간 정도
 
-        if (currentRotation + direction > 3)
+        if (currentRotation + 1 > 3)
             currentRotation = 0;
-        else if (currentRotation + direction < 0)
-            currentRotation = 3;
         else
-            currentRotation += direction;
+            currentRotation += 1;
 
         for (int i = 1; i < fixedBlock.Length; i++)
         {
@@ -74,6 +72,11 @@ public class BlockController : MonoBehaviour {
                 fixedBlock[i].posX -= outOfBorderX;
         }
 
+        for(int i = 0; i < fixedBlock.Length; i++)
+        {
+            GetComponent<BlockArrayManager>().SetElementContent(controlBlock[i].posX, controlBlock[i].posY, (int)BlockArrayManager.Content.Empty);
+            GetComponent<BlockArrayManager>().SetElementContent(fixedBlock[i].posX, fixedBlock[i].posY, (int)BlockArrayManager.Content.Block);
+        }
         controlBlock = fixedBlock;
         //BlockArrayManager의 gameArray를 업데이트하는 메서드 추가할것
     }
@@ -87,10 +90,18 @@ public class BlockController : MonoBehaviour {
             if (belowElementContent != 0)
             {
                 ChangeControlBlock();
+                Invoke("ChangeControlBlock()", 0.5f);
+                //Invoke("ChangeControlBlock()", EventManager.fallPeriod); //블럭 낙하주기만큼 기다린 후에 다음 블럭을 생성한다.
                 return;
-            }//리턴 앞에 controlBlock을 바꾸는 메서드가 실행되어야함
+            }
         }
         //controlBlock을 1만큼 이동시키는 메서드 실행
+        for(int i = 0; i < controlBlock.Length; i++)
+        {
+            GetComponent<BlockArrayManager>().SetElementContent(controlBlock[i].posX, controlBlock[i].posY, (int)BlockArrayManager.Content.Empty);
+            controlBlock[i].posY += 1;
+            GetComponent<BlockArrayManager>().SetElementContent(controlBlock[i].posX, controlBlock[i].posY, (int)BlockArrayManager.Content.Block);
+        }
     }
 
     //블럭을 빠른 낙하시킬 때 사용하는 메서드
@@ -105,20 +116,29 @@ public class BlockController : MonoBehaviour {
         }
 
         //controlBlock을 moveDistance만큼 이동시키는 메서드 실행
-        //controlBlock을 바꾸는 메서드 실행
+        for (int i = 0; i < controlBlock.Length; i++)
+        {
+            GetComponent<BlockArrayManager>().SetElementContent(controlBlock[i].posX, controlBlock[i].posY, (int)BlockArrayManager.Content.Empty);
+            controlBlock[i].posY += moveDistance;
+            GetComponent<BlockArrayManager>().SetElementContent(controlBlock[i].posX, controlBlock[i].posY, (int)BlockArrayManager.Content.Block);
+        }
+
+        Invoke("ChangeControlBlock()", 0.5f);
+        //Invoke("ChangeControlBlock()", EventManager.fallPeriod); //블럭 낙하주기만큼 기다린 후에 다음 블럭을 생성한다.
     }
 
     public void ChangeControlBlock()
     {
-        controlBlockType = Random.Range(0, 7);
+        controlBlockType = Random.Range(0, 6);
         controlBlock = new Module[4];
         controlBlock[0].posX = blockStartPosX;
         controlBlock[0].posY = blockStartPosY;
 
         for(int i = 0; i < controlBlock.Length; i++)
         {
-            controlBlock[i].posX = controlBlock[0].posX + BlockRotation.blockMove[controlBlockType, currentRotation, i - 1, 0];
-            controlBlock[i].posY = controlBlock[0].posY + BlockRotation.blockMove[controlBlockType, currentRotation, i - 1, 1];
+            controlBlock[i].posX = controlBlock[0].posX + BlockRotation.blockMove[controlBlockType, currentRotation, i - 1, (int)BlockArrayManager.Content.Empty];
+            controlBlock[i].posY = controlBlock[0].posY + BlockRotation.blockMove[controlBlockType, currentRotation, i - 1, (int)BlockArrayManager.Content.Block];
+            GetComponent<BlockArrayManager>().SetElementContent(controlBlock[i].posX, controlBlock[i].posY, (int)BlockArrayManager.Content.Block);
         }
 
         //BlockArrayManager의 controlBlock을 갱신하는 메서드 추가할것

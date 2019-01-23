@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class BlockArrayManager : MonoBehaviour {
 
-    public enum Arr { Empty, Block, Character}
+    public enum Content { Empty, Block, Character}
 
     public const int RowCount = 10;
-    private int[,] gameArray = new int[RowCount, 17]; //맨 위 3칸은 안보이게 한다.
+    public const int ElementsDistance = 100;            //두 좌표 사이의 간격
+    private int[,] gameArray = new int[RowCount, 17];   //맨 위 3칸은 안보이게 한다.
 
     
 
@@ -25,7 +26,7 @@ public class BlockArrayManager : MonoBehaviour {
     //true가 나올 경우 보너스 발동하는 메서드에 연결
     public bool CheckRow(int[] rowIndex)
     {
-        bool isComplete = true;
+        bool isComplete = true;         //한줄이 되면 true
         for(int i = 0; i < rowIndex.Length; i++)
         {
             for(int k = 0; k < gameArray.GetLength(1); k++)
@@ -44,6 +45,7 @@ public class BlockArrayManager : MonoBehaviour {
         return gameArray;
     }
 
+    //y축으로 다른 모듈에 닿기 위해 필요한 거리 계산
     public int GetCollisionDistance(int indexX, int indexY)
     {
         int distance = 0;
@@ -64,8 +66,13 @@ public class BlockArrayManager : MonoBehaviour {
         return distance;
     }
 
-    public int GetElementContent(int indexX, int indexY)
+    public int GetElementContent(int posX, int posY)
     {
-        return gameArray[indexX, indexY];
+        return gameArray[posX, posY];
+    }
+
+    public void SetElementContent(int posX, int posY, int content)
+    {
+        gameArray[posX, posY] = content;
     }
 }
