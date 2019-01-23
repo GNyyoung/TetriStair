@@ -8,20 +8,37 @@ public class DisplayController : MonoBehaviour {
     public GameObject background;
     const int ResolutionHeight = 1920;
     public Camera mainCamera;
+    private int backgroundPanelNum;
+    private int backgroundCount = 1;
+    RectTransform backgroundTransform;
 
-	// Use this for initialization
-	void Start () {
-		
-	}
+
+    // Use this for initialization
+    void Start () {
+        backgroundPanelNum = GameObject.Find("Canvas").transform.Find("Background").childCount;
+        backgroundTransform = GameObject.Find("Canvas").transform.Find("Background") as RectTransform;
+    }
 	
 	// Update is called once per frame
 	void Update () {
-		
+        BackgroundMove();
+        BackgroundPanelMove();
 	}
 
+    //배경이 계속 이어지게 함
+    public void BackgroundPanelMove()
+    {
+        if(backgroundTransform.localPosition.y < - ResolutionHeight * backgroundCount)
+        {
+            print("실행중");
+            backgroundTransform.GetChild((backgroundCount - 1) % 3).position += Vector3.up * backgroundPanelNum * ResolutionHeight;
+            backgroundCount += 1;
+        }
+    }
+
+    //배경을 움직임
     public void BackgroundMove()
     {
-        Mathf.FloorToInt(mainCamera.transform.position.y - ResolutionHeight);       //이걸로 어떤 인덱스를 이동시켜야 하는지 판단. 나머지를 구한다.
-        //카메라 높이에 따라서 맨밑 배경이 위로 이동하게 한다.
+        backgroundTransform.localPosition = -mainCamera.transform.position;
     }
 }
