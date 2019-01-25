@@ -11,6 +11,7 @@ public class DisplayController : MonoBehaviour {
     private int backgroundPanelNum;
     private int backgroundCount = 1;
     RectTransform backgroundTransform;
+    public GameObject module;
 
 
     // Use this for initialization
@@ -40,5 +41,27 @@ public class DisplayController : MonoBehaviour {
     public void BackgroundMove()
     {
         backgroundTransform.localPosition = -mainCamera.transform.position;
+    }
+
+    //게임보드에 모듈 이미지를 띄움.
+    public void ShowModule()
+    {
+        int[,] gameArray = GetComponent<BlockArrayManager>().GetGameArray();
+        RectTransform gameBoardTransform = GameObject.Find("GameBoard").transform as RectTransform;
+
+        for (int row = BlockArrayManager.unusedTopRowCount; row < BlockArrayManager.RowCount; row++)
+        {
+            for(int col = 0; col < BlockArrayManager.ColumnCount; col++)
+            {
+                if(gameArray[col,row] == 1)
+                {
+                    GameObject gameModule = Instantiate(module, gameBoardTransform);    //이렇게 하면 안됨. 이러면 매번 새로 만들어야 되잖아
+                    gameModule.transform.position = new Vector3(
+                        gameBoardTransform.position.x + gameBoardTransform.rect.width * (col + 0.5f), 
+                        gameBoardTransform.position.y - gameBoardTransform.rect.height * (row - BlockArrayManager.unusedTopRowCount + 0.5f), 
+                        gameModule.transform.position.z);
+                }
+            }
+        }
     }
 }

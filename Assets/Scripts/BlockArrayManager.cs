@@ -6,9 +6,11 @@ public class BlockArrayManager : MonoBehaviour {
 
     public enum Content { Empty, Block, Character}
 
-    public const int RowCount = 10;
+    public const int ColumnCount = 10;
+    public const int RowCount = 17;
+    public const int unusedTopRowCount = 3;
     public const int ElementsDistance = 100;            //두 좌표 사이의 간격
-    private int[,] gameArray = new int[RowCount, 17];   //맨 위 3칸은 안보이게 한다.
+    private int[,] gameArray = new int[ColumnCount, RowCount];   //맨 위 3칸은 안보이게 한다. 
 
     
 
@@ -74,5 +76,33 @@ public class BlockArrayManager : MonoBehaviour {
     public void SetElementContent(int posX, int posY, int content)
     {
         gameArray[posX, posY] = content;
+    }
+
+    //캐릭터가 최고높이 갱신할 때 보드를 업데이트함.
+    //모든 모듈의 위치가 1칸 내려감(array의 y이 1 커짐)
+    public void UpdateBoardAtClimb(int posX, int posY, int directionHorz)
+    {
+        SetElementContent(posX, posY, (int)Content.Empty);
+        SetElementContent(posX, posY - 1, (int)Content.Empty);
+        for (int row = RowCount - 2; row >= unusedTopRowCount; row--)
+        {
+            for (int col = ColumnCount; col >= 0; col--)
+            {
+                gameArray[col, row + 1] = gameArray[col, row];
+            }
+        }
+        SetElementContent(posX + directionHorz, posY, (int)Content.Character);
+        SetElementContent(posY + directionHorz, posY, (int)Content.Character);
+    }
+
+    //캐릭터가 최고높이로 안올라가고 아래위로 왔다갔다 할때.
+    //캐릭터 위치만 변함.
+    public void CharacterMove(int posX, int posY, int directionHorz, int directionVert)
+    {
+        SetElementContent(posX, posY, (int)Content.Empty);
+        SetElementContent(posX, posY - 1, (int)Content.Empty);
+
+        SetElementContent(posX + directionHorz, posY + directionVert, (int)Content.Character);
+        SetElementContent(posY + directionHorz, posY + directionVert, (int)Content.Character);
     }
 }
