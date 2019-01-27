@@ -9,15 +9,26 @@ public class BlockArrayManager : MonoBehaviour {
     public const int ColumnCount = 10;
     public const int RowCount = 17;
     public const int unusedTopRowCount = 3;
-    public const int ElementsDistance = 100;            //두 좌표 사이의 간격
+    public const int ModuleDistance = 100;            //두 좌표 사이의 간격
     private int[,] gameArray = new int[ColumnCount, RowCount];   //맨 위 3칸은 안보이게 한다. 
 
     
 
 	// Use this for initialization
 	void Start () {
-		
-	}
+        BlockController.Module[] startingModules = new BlockController.Module[ColumnCount];
+		for(int col = 0; col < ColumnCount; col++)
+        {
+            gameArray[col, 13] = (int)Content.Block;
+            startingModules[col].posX = col;
+            startingModules[col].posY = 13;
+        }
+        gameArray[Mathf.CeilToInt(ColumnCount / 2), 12] = (int)Content.Character;
+        gameArray[Mathf.CeilToInt(ColumnCount / 2), 11] = (int)Content.Character;
+
+        GameObject.Find("Main Camera").GetComponent<DisplayController>().InstantiateNewBlock(startingModules);
+        GameObject.Find("Main Camera").GetComponent<DisplayController>().InstantiateCharacter(Mathf.CeilToInt(ColumnCount / 2), 12);
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -93,6 +104,9 @@ public class BlockArrayManager : MonoBehaviour {
         }
         SetElementContent(posX + directionHorz, posY, (int)Content.Character);
         SetElementContent(posY + directionHorz, posY, (int)Content.Character);
+
+        //모듈들 위치 갱신
+        GameObject.Find("Main Camera").GetComponent<DisplayController>().DownAllModule();
     }
 
     //캐릭터가 최고높이로 안올라가고 아래위로 왔다갔다 할때.
@@ -105,4 +119,5 @@ public class BlockArrayManager : MonoBehaviour {
         SetElementContent(posX + directionHorz, posY + directionVert, (int)Content.Character);
         SetElementContent(posY + directionHorz, posY + directionVert, (int)Content.Character);
     }
+    
 }

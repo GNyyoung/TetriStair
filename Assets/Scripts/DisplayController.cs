@@ -11,7 +11,9 @@ public class DisplayController : MonoBehaviour {
     private int backgroundPanelNum;
     private int backgroundCount = 1;
     RectTransform backgroundTransform;
-    public GameObject module;
+    public GameObject moduleObject;
+    public GameObject characterObject;
+    List<GameObject> controlBlock = new List<GameObject>();     //현재 조종중인 블럭 오브젝트
 
 
     // Use this for initialization
@@ -22,7 +24,6 @@ public class DisplayController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        BackgroundMove();
         BackgroundPanelMove();
 	}
 
@@ -40,28 +41,59 @@ public class DisplayController : MonoBehaviour {
     //배경을 움직임
     public void BackgroundMove()
     {
-        backgroundTransform.localPosition = -mainCamera.transform.position;
+        backgroundTransform.localPosition -= Vector3.down * BlockArrayManager.ModuleDistance;
     }
 
-    //게임보드에 모듈 이미지를 띄움.
-    public void ShowModule()
+    //캐릭터가 최대 높이 갱신해서 올라갈때 실행
+    public void DownAllModule()
     {
-        int[,] gameArray = GetComponent<BlockArrayManager>().GetGameArray();
         RectTransform gameBoardTransform = GameObject.Find("GameBoard").transform as RectTransform;
+        gameBoardTransform.localPosition -= Vector3.down * BlockArrayManager.ModuleDistance;
+    }
 
-        for (int row = BlockArrayManager.unusedTopRowCount; row < BlockArrayManager.RowCount; row++)
+    //블럭 떨어지고 나서 새로운 블럭 생성할 때 실행
+    public void InstantiateNewBlock(BlockController.Module[] module)
+    {
+        RectTransform gameBoardRectTransform = GameObject.Find("GameBoard").GetComponent<RectTransform>();
+        for (int i = 0; i < module.Length; i++)
         {
-            for(int col = 0; col < BlockArrayManager.ColumnCount; col++)
-            {
-                if(gameArray[col,row] == 1)
-                {
-                    GameObject gameModule = Instantiate(module, gameBoardTransform);    //이렇게 하면 안됨. 이러면 매번 새로 만들어야 되잖아
-                    gameModule.transform.position = new Vector3(
-                        gameBoardTransform.position.x + gameBoardTransform.rect.width * (col + 0.5f), 
-                        gameBoardTransform.position.y - gameBoardTransform.rect.height * (row - BlockArrayManager.unusedTopRowCount + 0.5f), 
-                        gameModule.transform.position.z);
-                }
-            }
+            controlBlock.Add(Instantiate(moduleObject, 
+                gameBoardRectTransform.localPosition + 
+                Vector3.right * BlockArrayManager.ModuleDistance * (module[i].posX + 0.5f) + 
+                Vector3.down * BlockArrayManager.ModuleDistance * (module[i].posY * 0.5f),
+                Quaternion.identity,
+                gameBoardRectTransform.transform));
         }
+    }
+    
+    //캐릭터 오브젝트를 생성함
+    public void InstantiateCharacter(int posX, int posY)
+    {
+        RectTransform gameBoardRectTransform = GameObject.Find("GameBoard").GetComponent<RectTransform>();
+        Instantiate(characterObject, 
+            gameBoardRectTransform.localPosition + 
+            Vector3.right * BlockArrayManager.ModuleDistance * (posX + 0.5f) + 
+            Vector3.down * BlockArrayManager.ModuleDistance * (posY + 0.5f), 
+            Quaternion.identity, 
+            gameBoardRectTransform.transform);
+    }
+
+    //블럭 이미지의 위치를 바꿔줌
+    public void MoveBlock(int horzDistance, int vertDistance)
+    {
+        for(int i = 0; i < controlBlock.Count; i++)
+        {
+            controlBlock[i].GetComponent<RectTransform>().position += 
+                Vector3.right * BlockArrayManager.ModuleDistance * horzDistance + 
+                Vector3.down * BlockArrayManager.ModuleDistance * vertDistance;
+        }
+    }
+
+    //캐릭터 움직임 관련
+    public void CharacterMove(int horzDistance, int vertDistance)
+    {
+        characterObject.GetComponent<RectTransform>().position += 
+            Vector3.right * BlockArrayManager.ModuleDistance * horzDistance + 
+            Vector3.down * BlockArrayManager.ModuleDistance * vertDistance;
     }
 }

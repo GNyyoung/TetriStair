@@ -7,8 +7,8 @@ public class BlockController : MonoBehaviour {
     public Module[] controlBlock = new Module[4];
     int controlBlockType;
     int currentRotation = 0;
-    int blockStartPosX = Mathf.CeilToInt(BlockArrayManager.RowCount / 2);
-    int blockStartPosY = 3;
+    public static int blockStartPosX = Mathf.CeilToInt(BlockArrayManager.ColumnCount / 2);
+    public static int blockStartPosY = 3;
 
     public struct Module
     {
@@ -102,6 +102,7 @@ public class BlockController : MonoBehaviour {
             controlBlock[i].posY += 1;
             GetComponent<BlockArrayManager>().SetElementContent(controlBlock[i].posX, controlBlock[i].posY, (int)BlockArrayManager.Content.Block);
         }
+        //디스플레이 컨트롤러에서 이미지 갱신하는 메서드 실행
     }
 
     //블럭을 빠른 낙하시킬 때 사용하는 메서드
@@ -140,7 +141,26 @@ public class BlockController : MonoBehaviour {
             controlBlock[i].posY = controlBlock[0].posY + BlockRotation.blockMove[controlBlockType, currentRotation, i - 1, (int)BlockArrayManager.Content.Block];
             GetComponent<BlockArrayManager>().SetElementContent(controlBlock[i].posX, controlBlock[i].posY, (int)BlockArrayManager.Content.Block);
         }
+        
+    }
 
-        //BlockArrayManager의 controlBlock을 갱신하는 메서드 추가할것
+    //블럭을 좌우로 이동시키는 메서드
+    public void BlockHorzMove(int direction)
+    {
+        for (int i = 0; i < controlBlock.Length; i++)
+        {
+            int belowElementContent = GetComponent<BlockArrayManager>().GetElementContent(controlBlock[i].posX, controlBlock[i].posY + 1);
+            if (belowElementContent != 0)
+            {
+                return;
+            }
+        }
+        //controlBlock을 1만큼 이동시키는 메서드 실행
+        for (int i = 0; i < controlBlock.Length; i++)
+        {
+            GetComponent<BlockArrayManager>().SetElementContent(controlBlock[i].posX, controlBlock[i].posY, (int)BlockArrayManager.Content.Empty);
+            controlBlock[i].posX += direction;
+            GetComponent<BlockArrayManager>().SetElementContent(controlBlock[i].posX, controlBlock[i].posY, (int)BlockArrayManager.Content.Block);
+        }
     }
 }

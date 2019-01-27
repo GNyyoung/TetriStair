@@ -28,7 +28,7 @@ public class EventManager : MonoBehaviour {
     {
         if(fallCooltime > fallTime)
         {
-            GetComponent<BlockController>().FallBlock();
+            GameObject.Find("GameBoardPanel").GetComponent<BlockController>().FallBlock();
         }
         fallCooltime += deltaTime;
     }
