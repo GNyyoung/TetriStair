@@ -27,19 +27,19 @@ public class CharacterAction : MonoBehaviour {
     {
         int directionVert = 0;
 
-        if (GameObject.Find("BackgroundPanel").GetComponent<BlockArrayManager>().GetElementContent(posX + directionHorz, posY - 1) == 0)
+        if (GameObject.Find("GameBoardPanel").GetComponent<BlockArrayManager>().GetElementContent(posX + directionHorz, posY - 1) == 0)
         {
-            if (GameObject.Find("BackgroundPanel").GetComponent<BlockArrayManager>().GetElementContent(posX + directionHorz, posY) == 1)
+            if (GameObject.Find("GameBoardPanel").GetComponent<BlockArrayManager>().GetElementContent(posX + directionHorz, posY) == 1)
             {
                 //1칸 높은 곳으로 올라감
                 directionVert = 1;
                 climbHeight += 1;
             }
-            else if (GameObject.Find("BackgroundPanel").GetComponent<BlockArrayManager>().GetElementContent(posX + directionHorz, posY + 1) == 1)
+            else if (GameObject.Find("GameBoardPanel").GetComponent<BlockArrayManager>().GetElementContent(posX + directionHorz, posY + 1) == 1)
             {
                 //같은 높이에서 이동
             }
-            else if (GameObject.Find("BackgroundPanel").GetComponent<BlockArrayManager>().GetElementContent(posX + directionHorz, posY + 2) == 1)
+            else if (GameObject.Find("GameBoardPanel").GetComponent<BlockArrayManager>().GetElementContent(posX + directionHorz, posY + 2) == 1)
             {
                 //1칸 낮은 곳으로 내려감
                 directionVert = -1;
@@ -54,7 +54,7 @@ public class CharacterAction : MonoBehaviour {
         if (climbHeight > maxClimbHeight)
         {
             //캐릭터가 최고높이를 갱신할 때
-            GameObject.Find("BackgroundPanel").GetComponent<BlockArrayManager>().UpdateBoardAtClimb(posX, posY, directionHorz);
+            GameObject.Find("GameBoardPanel").GetComponent<BlockArrayManager>().UpdateBoardAtClimb(posX, posY, directionHorz);
             GameObject.Find("Main Camera").GetComponent<DisplayController>().BackgroundMove();
             maxClimbHeight = climbHeight;
             transform.position = new Vector3(transform.position.x + directionHorz * BlockArrayManager.ModuleDistance, transform.position.y, transform.position.z);
@@ -64,8 +64,8 @@ public class CharacterAction : MonoBehaviour {
         else
         {
             //아래위로 왔다갔다 할때
-            GameObject.Find("BackgroundPanel").GetComponent<BlockArrayManager>().CharacterMove(posX, posY, directionHorz, directionVert);
-            transform.position = new Vector3(transform.position.x + directionHorz * BlockArrayManager.ModuleDistance, transform.position.y + directionVert * BlockArrayManager.ModuleDistance, transform.position.z);
+            GameObject.Find("GameBoardPanel").GetComponent<BlockArrayManager>().CharacterMove(posX, posY, directionHorz, directionVert);
+            GetComponent<RectTransform>().localPosition += new Vector3(directionHorz * BlockArrayManager.ModuleDistance, directionVert * BlockArrayManager.ModuleDistance);
             posX += directionHorz;
             posY += directionVert;
             GameObject.Find("Main Camera").GetComponent<DisplayController>().CharacterMove(directionHorz, directionVert);
@@ -73,5 +73,10 @@ public class CharacterAction : MonoBehaviour {
         //캐릭터 오브젝트가 이동하는 애니메이션 필요
     }
     
-    
+    //기준좌표는 캐릭터 좌표 두개 중 아래(다리)쪽
+    public void InitializeCharacterPosition(int posX, int posY)
+    {
+        this.posX = posX;
+        this.posY = posY;
+    }
 }

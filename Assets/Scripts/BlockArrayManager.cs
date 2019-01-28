@@ -21,13 +21,14 @@ public class BlockArrayManager : MonoBehaviour {
         {
             gameArray[col, 13] = (int)Content.Block;
             startingModules[col].posX = col;
-            startingModules[col].posY = 13;
+            startingModules[col].posY = 14;
         }
         gameArray[Mathf.CeilToInt(ColumnCount / 2), 12] = (int)Content.Character;
         gameArray[Mathf.CeilToInt(ColumnCount / 2), 11] = (int)Content.Character;
 
         GameObject.Find("Main Camera").GetComponent<DisplayController>().InstantiateNewBlock(startingModules);
-        GameObject.Find("Main Camera").GetComponent<DisplayController>().InstantiateCharacter(Mathf.CeilToInt(ColumnCount / 2), 12);
+        GameObject.Find("Main Camera").GetComponent<DisplayController>().InstantiateCharacter(Mathf.CeilToInt(ColumnCount / 2), 13);
+        GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterAction>().InitializeCharacterPosition(Mathf.CeilToInt(ColumnCount / 2), 12);
     }
 	
 	// Update is called once per frame
@@ -109,15 +110,15 @@ public class BlockArrayManager : MonoBehaviour {
         GameObject.Find("Main Camera").GetComponent<DisplayController>().DownAllModule();
     }
 
-    //캐릭터가 최고높이로 안올라가고 아래위로 왔다갔다 할때.
+    //캐릭터가 최고높이로 안올라가고 아래위, 또는 옆으로 왔다갔다 할때.
     //캐릭터 위치만 변함.
     public void CharacterMove(int posX, int posY, int directionHorz, int directionVert)
     {
         SetElementContent(posX, posY, (int)Content.Empty);
         SetElementContent(posX, posY - 1, (int)Content.Empty);
-
+        
         SetElementContent(posX + directionHorz, posY + directionVert, (int)Content.Character);
-        SetElementContent(posY + directionHorz, posY + directionVert, (int)Content.Character);
+        SetElementContent(posX + directionHorz, posY +  - 1 + directionVert, (int)Content.Character);
     }
     
 }

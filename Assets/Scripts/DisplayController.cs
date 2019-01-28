@@ -14,12 +14,14 @@ public class DisplayController : MonoBehaviour {
     public GameObject moduleObject;
     public GameObject characterObject;
     List<GameObject> controlBlock = new List<GameObject>();     //현재 조종중인 블럭 오브젝트
+    Vector3 gameBoardPosition;
 
 
     // Use this for initialization
     void Start () {
         backgroundPanelNum = GameObject.Find("Canvas").transform.Find("Background").childCount;
         backgroundTransform = GameObject.Find("Canvas").transform.Find("Background") as RectTransform;
+        gameBoardPosition = GameObject.Find("GameBoard").GetComponent<RectTransform>().localPosition;
     }
 	
 	// Update is called once per frame
@@ -57,12 +59,13 @@ public class DisplayController : MonoBehaviour {
         RectTransform gameBoardRectTransform = GameObject.Find("GameBoard").GetComponent<RectTransform>();
         for (int i = 0; i < module.Length; i++)
         {
-            controlBlock.Add(Instantiate(moduleObject, 
-                gameBoardRectTransform.localPosition + 
-                Vector3.right * BlockArrayManager.ModuleDistance * (module[i].posX + 0.5f) + 
+            controlBlock.Add(Instantiate(moduleObject,
+                gameBoardRectTransform.localPosition +
+                Vector3.right * BlockArrayManager.ModuleDistance * (module[i].posX + 0.5f) +
                 Vector3.down * BlockArrayManager.ModuleDistance * (module[i].posY * 0.5f),
                 Quaternion.identity,
                 gameBoardRectTransform.transform));
+            controlBlock[controlBlock.Count - 1].GetComponent<RectTransform>().localPosition = new Vector3(BlockArrayManager.ModuleDistance * (module[i].posX + 0.5f), -BlockArrayManager.ModuleDistance * (module[i].posY + 0.5f - BlockArrayManager.unusedTopRowCount));
         }
     }
     
@@ -70,12 +73,11 @@ public class DisplayController : MonoBehaviour {
     public void InstantiateCharacter(int posX, int posY)
     {
         RectTransform gameBoardRectTransform = GameObject.Find("GameBoard").GetComponent<RectTransform>();
-        Instantiate(characterObject, 
-            gameBoardRectTransform.localPosition + 
-            Vector3.right * BlockArrayManager.ModuleDistance * (posX + 0.5f) + 
-            Vector3.down * BlockArrayManager.ModuleDistance * (posY + 0.5f), 
-            Quaternion.identity, 
-            gameBoardRectTransform.transform);
+        GameObject character = Instantiate(characterObject);
+        character.GetComponent<RectTransform>().SetParent(GameObject.Find("GameBoard").transform);
+        character.GetComponent<RectTransform>().localPosition = new Vector3(BlockArrayManager.ModuleDistance * (posX + 0.5f), -BlockArrayManager.ModuleDistance * (posY - BlockArrayManager.unusedTopRowCount) - (BlockArrayManager.ModuleDistance * 2 - character.GetComponent<RectTransform>().sizeDelta.y) / 2);
+        character.GetComponent<RectTransform>().localScale = Vector3.one;
+        GameObject.Find("Canvas").GetComponent<UIManager>().SetCharacter(character);
     }
 
     //블럭 이미지의 위치를 바꿔줌

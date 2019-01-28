@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TetriStair", "TetriStair.csproj", "{CF6AD907-AF96-1D6C-8A59-7CE10E84FCC3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TetriStair.Plugins", "TetriStair.Plugins.csproj", "{4BC516D6-997C-CE6D-441F-008C6FC9267B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +15,10 @@ Global
 		{CF6AD907-AF96-1D6C-8A59-7CE10E84FCC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF6AD907-AF96-1D6C-8A59-7CE10E84FCC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CF6AD907-AF96-1D6C-8A59-7CE10E84FCC3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4BC516D6-997C-CE6D-441F-008C6FC9267B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4BC516D6-997C-CE6D-441F-008C6FC9267B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4BC516D6-997C-CE6D-441F-008C6FC9267B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4BC516D6-997C-CE6D-441F-008C6FC9267B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

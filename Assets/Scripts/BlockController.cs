@@ -19,7 +19,7 @@ public class BlockController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		
+        ChangeControlBlock();
 	}
 	
 	// Update is called once per frame

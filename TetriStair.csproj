@@ -79,6 +79,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="TetriStair.Plugins.csproj">
+      <Project>{4BC516D6-997C-CE6D-441F-008C6FC9267B}</Project>
+      <Name>TetriStair.Plugins</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="Assets\Scripts\BlockArrayManager.cs" />
     <Compile Include="Assets\Scripts\BlockController.cs" />
     <Compile Include="Assets\Scripts\BlockRotation.cs" />
