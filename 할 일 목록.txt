@@ -14,4 +14,5 @@
 	local position이 anchor와 상관없이 무조건 중앙 anchor의 position 기준으로 값을 출력한다. 그래서 position을 0,0으로 맞춰놨는데도 anchor가 달라서 position이 달라지는 거였음.
 	임시로 localPosition만큼 빼고 포지션 계산했음
 
-4. 배열 값이 초과된다는데 이유를 모르겠음.
+4. 블럭이 생성될때 화면 윗부분에 나와야할 애들은 잘려서 안나옴
+	화면 밖에서 나오는 애들은 false로 해놓고 화면 안으로 들어올 때 켜주자.

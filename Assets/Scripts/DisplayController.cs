@@ -56,6 +56,7 @@ public class DisplayController : MonoBehaviour {
     //블럭 떨어지고 나서 새로운 블럭 생성할 때 실행
     public void InstantiateNewBlock(BlockController.Module[] module)
     {
+        controlBlock = new List<GameObject>();
         RectTransform gameBoardRectTransform = GameObject.Find("GameBoard").GetComponent<RectTransform>();
         for (int i = 0; i < module.Length; i++)
         {
@@ -85,7 +86,7 @@ public class DisplayController : MonoBehaviour {
     {
         for(int i = 0; i < controlBlock.Count; i++)
         {
-            controlBlock[i].GetComponent<RectTransform>().position += 
+            controlBlock[i].GetComponent<RectTransform>().localPosition += 
                 Vector3.right * BlockArrayManager.ModuleDistance * horzDistance + 
                 Vector3.down * BlockArrayManager.ModuleDistance * vertDistance;
         }

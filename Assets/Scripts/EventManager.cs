@@ -5,13 +5,13 @@ using UnityEngine;
 public class EventManager : MonoBehaviour {
 
     float deltaTime;
-    const float maxFallTime = 1;
-    const float minFallTime = 0.5f;
+    const float maxFallTime = 3;
+    const float minFallTime = 1;
     float fallTime;
     float fallCooltime = 0;
     const float maxSinkTime = 7;
     const float minSinkTime = 1;
-    int MaxClimbHeight;
+    int maxClimbHeight;
 
 	// Use this for initialization
 	void Start () {
@@ -21,6 +21,8 @@ public class EventManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         deltaTime = Time.deltaTime;
+        CalcFallTime();
+        BlockFallCycle();
 	}
 
     //블럭을 언제 1칸 떨어지게 할지 계산
@@ -28,20 +30,21 @@ public class EventManager : MonoBehaviour {
     {
         if(fallCooltime > fallTime)
         {
+            print("블럭 1칸 추락");
             GameObject.Find("GameBoardPanel").GetComponent<BlockController>().FallBlock();
+            fallCooltime = 0;
         }
-        fallCooltime += deltaTime;
+        else
+            fallCooltime += deltaTime;
     }
 
     //플레이어가 층 올라갈 때마다 낙하시간 계산
     //최소 시간에 도달하면 계산 안하게 짜면 좋을듯
-    private float CalcFallTime(int climbHeight)
+    private void CalcFallTime()
     {
-        float fallTime = maxFallTime - (maxFallTime - minFallTime) * climbHeight / 200;
+        fallTime = maxFallTime - (maxFallTime - minFallTime) * maxClimbHeight / 200;
         if (fallTime < minFallTime)
             fallTime = minFallTime;
-
-        return fallTime;
     }
 
     //플레이어가 층 올라갈 때마다 가라앉는 시간 계산
@@ -57,6 +60,6 @@ public class EventManager : MonoBehaviour {
 
     public void UpdateMaxClimbHeight()
     {
-        MaxClimbHeight += 1;
+        maxClimbHeight += 1;
     }
 }

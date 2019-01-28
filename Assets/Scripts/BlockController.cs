@@ -19,7 +19,7 @@ public class BlockController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        ChangeControlBlock();
+        
 	}
 	
 	// Update is called once per frame
@@ -74,8 +74,8 @@ public class BlockController : MonoBehaviour {
 
         for(int i = 0; i < fixedBlock.Length; i++)
         {
-            GetComponent<BlockArrayManager>().SetElementContent(controlBlock[i].posX, controlBlock[i].posY, (int)BlockArrayManager.Content.Empty);
-            GetComponent<BlockArrayManager>().SetElementContent(fixedBlock[i].posX, fixedBlock[i].posY, (int)BlockArrayManager.Content.Block);
+            GetComponent<BlockArrayManager>().SetModuleContent(controlBlock[i].posX, controlBlock[i].posY, (int)BlockArrayManager.Content.Empty);
+            GetComponent<BlockArrayManager>().SetModuleContent(fixedBlock[i].posX, fixedBlock[i].posY, (int)BlockArrayManager.Content.Block);
         }
         controlBlock = fixedBlock;
         //BlockArrayManager의 gameArray를 업데이트하는 메서드 추가할것
@@ -98,11 +98,11 @@ public class BlockController : MonoBehaviour {
         //controlBlock을 1만큼 이동시키는 메서드 실행
         for(int i = 0; i < controlBlock.Length; i++)
         {
-            GetComponent<BlockArrayManager>().SetElementContent(controlBlock[i].posX, controlBlock[i].posY, (int)BlockArrayManager.Content.Empty);
+            GetComponent<BlockArrayManager>().SetModuleContent(controlBlock[i].posX, controlBlock[i].posY, (int)BlockArrayManager.Content.Empty);
             controlBlock[i].posY += 1;
-            GetComponent<BlockArrayManager>().SetElementContent(controlBlock[i].posX, controlBlock[i].posY, (int)BlockArrayManager.Content.Block);
+            GetComponent<BlockArrayManager>().SetModuleContent(controlBlock[i].posX, controlBlock[i].posY, (int)BlockArrayManager.Content.Block);
         }
-        //디스플레이 컨트롤러에서 이미지 갱신하는 메서드 실행
+        GameObject.Find("Main Camera").GetComponent<DisplayController>().MoveBlock(0, 1);
     }
 
     //블럭을 빠른 낙하시킬 때 사용하는 메서드
@@ -119,9 +119,9 @@ public class BlockController : MonoBehaviour {
         //controlBlock을 moveDistance만큼 이동시키는 메서드 실행
         for (int i = 0; i < controlBlock.Length; i++)
         {
-            GetComponent<BlockArrayManager>().SetElementContent(controlBlock[i].posX, controlBlock[i].posY, (int)BlockArrayManager.Content.Empty);
+            GetComponent<BlockArrayManager>().SetModuleContent(controlBlock[i].posX, controlBlock[i].posY, (int)BlockArrayManager.Content.Empty);
             controlBlock[i].posY += moveDistance;
-            GetComponent<BlockArrayManager>().SetElementContent(controlBlock[i].posX, controlBlock[i].posY, (int)BlockArrayManager.Content.Block);
+            GetComponent<BlockArrayManager>().SetModuleContent(controlBlock[i].posX, controlBlock[i].posY, (int)BlockArrayManager.Content.Block);
         }
 
         Invoke("ChangeControlBlock()", 0.5f);
@@ -135,13 +135,14 @@ public class BlockController : MonoBehaviour {
         controlBlock[0].posX = blockStartPosX;
         controlBlock[0].posY = blockStartPosY;
 
-        for(int i = 0; i < controlBlock.Length; i++)
+        for(int i = 1; i < controlBlock.Length; i++)
         {
             controlBlock[i].posX = controlBlock[0].posX + BlockRotation.blockMove[controlBlockType, currentRotation, i - 1, (int)BlockArrayManager.Content.Empty];
             controlBlock[i].posY = controlBlock[0].posY + BlockRotation.blockMove[controlBlockType, currentRotation, i - 1, (int)BlockArrayManager.Content.Block];
-            GetComponent<BlockArrayManager>().SetElementContent(controlBlock[i].posX, controlBlock[i].posY, (int)BlockArrayManager.Content.Block);
+            GetComponent<BlockArrayManager>().SetModuleContent(controlBlock[i].posX, controlBlock[i].posY, (int)BlockArrayManager.Content.Block);
         }
-        
+
+        GameObject.Find("Main Camera").GetComponent<DisplayController>().InstantiateNewBlock(controlBlock);
     }
 
     //블럭을 좌우로 이동시키는 메서드
@@ -158,9 +159,9 @@ public class BlockController : MonoBehaviour {
         //controlBlock을 1만큼 이동시키는 메서드 실행
         for (int i = 0; i < controlBlock.Length; i++)
         {
-            GetComponent<BlockArrayManager>().SetElementContent(controlBlock[i].posX, controlBlock[i].posY, (int)BlockArrayManager.Content.Empty);
+            GetComponent<BlockArrayManager>().SetModuleContent(controlBlock[i].posX, controlBlock[i].posY, (int)BlockArrayManager.Content.Empty);
             controlBlock[i].posX += direction;
-            GetComponent<BlockArrayManager>().SetElementContent(controlBlock[i].posX, controlBlock[i].posY, (int)BlockArrayManager.Content.Block);
+            GetComponent<BlockArrayManager>().SetModuleContent(controlBlock[i].posX, controlBlock[i].posY, (int)BlockArrayManager.Content.Block);
         }
     }
 }

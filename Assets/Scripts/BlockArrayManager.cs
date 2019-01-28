@@ -16,19 +16,7 @@ public class BlockArrayManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        BlockController.Module[] startingModules = new BlockController.Module[ColumnCount];
-		for(int col = 0; col < ColumnCount; col++)
-        {
-            gameArray[col, 13] = (int)Content.Block;
-            startingModules[col].posX = col;
-            startingModules[col].posY = 14;
-        }
-        gameArray[Mathf.CeilToInt(ColumnCount / 2), 12] = (int)Content.Character;
-        gameArray[Mathf.CeilToInt(ColumnCount / 2), 11] = (int)Content.Character;
-
-        GameObject.Find("Main Camera").GetComponent<DisplayController>().InstantiateNewBlock(startingModules);
-        GameObject.Find("Main Camera").GetComponent<DisplayController>().InstantiateCharacter(Mathf.CeilToInt(ColumnCount / 2), 13);
-        GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterAction>().InitializeCharacterPosition(Mathf.CeilToInt(ColumnCount / 2), 12);
+        
     }
 	
 	// Update is called once per frame
@@ -85,7 +73,7 @@ public class BlockArrayManager : MonoBehaviour {
         return gameArray[posX, posY];
     }
 
-    public void SetElementContent(int posX, int posY, int content)
+    public void SetModuleContent(int posX, int posY, int content)
     {
         gameArray[posX, posY] = content;
     }
@@ -94,8 +82,8 @@ public class BlockArrayManager : MonoBehaviour {
     //모든 모듈의 위치가 1칸 내려감(array의 y이 1 커짐)
     public void UpdateBoardAtClimb(int posX, int posY, int directionHorz)
     {
-        SetElementContent(posX, posY, (int)Content.Empty);
-        SetElementContent(posX, posY - 1, (int)Content.Empty);
+        SetModuleContent(posX, posY, (int)Content.Empty);
+        SetModuleContent(posX, posY - 1, (int)Content.Empty);
         for (int row = RowCount - 2; row >= unusedTopRowCount; row--)
         {
             for (int col = ColumnCount; col >= 0; col--)
@@ -103,8 +91,8 @@ public class BlockArrayManager : MonoBehaviour {
                 gameArray[col, row + 1] = gameArray[col, row];
             }
         }
-        SetElementContent(posX + directionHorz, posY, (int)Content.Character);
-        SetElementContent(posY + directionHorz, posY, (int)Content.Character);
+        SetModuleContent(posX + directionHorz, posY, (int)Content.Character);
+        SetModuleContent(posY + directionHorz, posY, (int)Content.Character);
 
         //모듈들 위치 갱신
         GameObject.Find("Main Camera").GetComponent<DisplayController>().DownAllModule();
@@ -114,11 +102,11 @@ public class BlockArrayManager : MonoBehaviour {
     //캐릭터 위치만 변함.
     public void CharacterMove(int posX, int posY, int directionHorz, int directionVert)
     {
-        SetElementContent(posX, posY, (int)Content.Empty);
-        SetElementContent(posX, posY - 1, (int)Content.Empty);
+        SetModuleContent(posX, posY, (int)Content.Empty);
+        SetModuleContent(posX, posY - 1, (int)Content.Empty);
         
-        SetElementContent(posX + directionHorz, posY + directionVert, (int)Content.Character);
-        SetElementContent(posX + directionHorz, posY +  - 1 + directionVert, (int)Content.Character);
+        SetModuleContent(posX + directionHorz, posY + directionVert, (int)Content.Character);
+        SetModuleContent(posX + directionHorz, posY +  - 1 + directionVert, (int)Content.Character);
     }
     
 }
