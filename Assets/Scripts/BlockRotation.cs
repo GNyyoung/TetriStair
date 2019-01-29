@@ -16,20 +16,21 @@ public class BlockRotation : MonoBehaviour {
 
     private void Start()
     {
-        string jsonString = File.ReadAllText(Application.dataPath + "/Resources/Blocks.json");
-        JsonData blockRotationData = JsonMapper.ToObject(jsonString);
-        for(int i = 0; i < blockRotationData.Count; i++)
-        {
-            blockMove[
-                (int)blockRotationData[i]["BlockNum"], 
-                (int)blockRotationData[i]["Rotation"], 
-                (int)blockRotationData[i]["ModuleNum"], 
-                (int)blockRotationData[i]["Position"]] = (int)blockRotationData[i]["Value"];
-        }
+        
     }
 
-    public BlockRotation()
+    public void SetBlockRotation()
     {
-        //파일에서 값 가져와서 넣는걸로 하자...
+        string jsonString = File.ReadAllText(Application.dataPath + "/Resources/Blocks.json");
+        print(Application.dataPath + "/Resources/Blocks.json");
+        JsonData blockRotationData = JsonMapper.ToObject(jsonString);
+        for (int i = 0; i < blockRotationData["Blocks"].Count; i++)
+        {
+            blockMove[
+                (int)blockRotationData["Blocks"][i]["BlockNum"], 
+                (int)blockRotationData["Blocks"][i]["Rotation"],
+                (int)blockRotationData["Blocks"][i]["ModuleNum"],
+                (int)blockRotationData["Blocks"][i]["Position"]] = (int)blockRotationData["Blocks"][i]["Value"];
+        }
     }
 }

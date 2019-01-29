@@ -5,8 +5,8 @@ using UnityEngine;
 public class EventManager : MonoBehaviour {
 
     float deltaTime;
-    const float maxFallTime = 3;
-    const float minFallTime = 1;
+    const float maxFallTime = 1;
+    const float minFallTime = 0.5f;
     float fallTime;
     float fallCooltime = 0;
     const float maxSinkTime = 7;
@@ -30,7 +30,6 @@ public class EventManager : MonoBehaviour {
     {
         if(fallCooltime > fallTime)
         {
-            print("블럭 1칸 추락");
             GameObject.Find("GameBoardPanel").GetComponent<BlockController>().FallBlock();
             fallCooltime = 0;
         }
@@ -61,5 +60,10 @@ public class EventManager : MonoBehaviour {
     public void UpdateMaxClimbHeight()
     {
         maxClimbHeight += 1;
+    }
+
+    public void ResetFallColltime()
+    {
+        fallCooltime = 0;
     }
 }

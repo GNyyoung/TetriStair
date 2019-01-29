@@ -13,7 +13,7 @@ public class DisplayController : MonoBehaviour {
     RectTransform backgroundTransform;
     public GameObject moduleObject;
     public GameObject characterObject;
-    List<GameObject> controlBlock = new List<GameObject>();     //현재 조종중인 블럭 오브젝트
+    List<GameObject> controlBlockObject = new List<GameObject>();     //현재 조종중인 블럭 오브젝트
     Vector3 gameBoardPosition;
 
 
@@ -51,23 +51,28 @@ public class DisplayController : MonoBehaviour {
     {
         RectTransform gameBoardTransform = GameObject.Find("GameBoard").transform as RectTransform;
         gameBoardTransform.localPosition -= Vector3.down * BlockArrayManager.ModuleDistance;
+        //배열 밖으로 나간 오브젝트들 제거하는 메서드 실행
     }
 
     //블럭 떨어지고 나서 새로운 블럭 생성할 때 실행
     public void InstantiateNewBlock(BlockController.Module[] module)
     {
-        controlBlock = new List<GameObject>();
+        controlBlockObject = new List<GameObject>();
         RectTransform gameBoardRectTransform = GameObject.Find("GameBoard").GetComponent<RectTransform>();
         for (int i = 0; i < module.Length; i++)
         {
-            controlBlock.Add(Instantiate(moduleObject,
-                gameBoardRectTransform.localPosition +
-                Vector3.right * BlockArrayManager.ModuleDistance * (module[i].posX + 0.5f) +
-                Vector3.down * BlockArrayManager.ModuleDistance * (module[i].posY * 0.5f),
-                Quaternion.identity,
-                gameBoardRectTransform.transform));
-            controlBlock[controlBlock.Count - 1].GetComponent<RectTransform>().localPosition = new Vector3(BlockArrayManager.ModuleDistance * (module[i].posX + 0.5f), -BlockArrayManager.ModuleDistance * (module[i].posY + 0.5f - BlockArrayManager.unusedTopRowCount));
+            //controlBlock.Add(Instantiate(moduleObject,
+            //    gameBoardRectTransform.localPosition +
+            //    Vector3.right * BlockArrayManager.ModuleDistance * (module[i].posX + 0.5f) +
+            //    Vector3.down * BlockArrayManager.ModuleDistance * (module[i].posY * 0.5f),
+            //    Quaternion.identity,
+            //    gameBoardRectTransform.transform));
+            controlBlockObject.Add(Instantiate(moduleObject, gameBoardRectTransform));
+            //print(module[i].posX + "," + module[i].posY);
+            controlBlockObject[i].GetComponent<RectTransform>().localPosition = new Vector3(BlockArrayManager.ModuleDistance * (module[i].posX + 0.5f), -BlockArrayManager.ModuleDistance * (module[i].posY + 0.5f - BlockArrayManager.unusedTopRowCount));
         }
+
+        GameObject.Find("GameBoardPanel").GetComponent<BlockArrayManager>().ShowContent();
     }
     
     //캐릭터 오브젝트를 생성함
@@ -84,9 +89,9 @@ public class DisplayController : MonoBehaviour {
     //블럭 이미지의 위치를 바꿔줌
     public void MoveBlock(int horzDistance, int vertDistance)
     {
-        for(int i = 0; i < controlBlock.Count; i++)
+        for(int i = 0; i < controlBlockObject.Count; i++)
         {
-            controlBlock[i].GetComponent<RectTransform>().localPosition += 
+            controlBlockObject[i].GetComponent<RectTransform>().localPosition += 
                 Vector3.right * BlockArrayManager.ModuleDistance * horzDistance + 
                 Vector3.down * BlockArrayManager.ModuleDistance * vertDistance;
         }

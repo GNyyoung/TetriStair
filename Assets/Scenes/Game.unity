@@ -762,6 +762,7 @@ GameObject:
   - component: {fileID: 816088215}
   - component: {fileID: 816088218}
   - component: {fileID: 816088217}
+  - component: {fileID: 816088219}
   m_Layer: 5
   m_Name: GameBoardPanel
   m_TagString: Untagged
@@ -841,6 +842,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a406f58dacc58974f97aa0188cab2aa0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pointObject: {fileID: 1028488481903972, guid: 3eb7b5c4637b8704eb6522c54403632d,
+    type: 2}
+--- !u!114 &816088219
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 816088213}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ca6a97434112b741827d644d0ede28c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &844641275
