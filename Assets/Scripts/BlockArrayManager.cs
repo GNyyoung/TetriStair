@@ -159,13 +159,13 @@ public class BlockArrayManager : MonoBehaviour {
         SetModuleContent(posX, posY - 1, (int)Content.Empty);
         for (int row = RowCount - 2; row >= unusedTopRowCount; row--)
         {
-            for (int col = ColumnCount; col >= 0; col--)
+            for (int col = ColumnCount - 1; col >= 0; col--)
             {
                 gameArray[col, row + 1] = gameArray[col, row];
             }
         }
         SetModuleContent(posX + directionHorz, posY, (int)Content.Character);
-        SetModuleContent(posY + directionHorz, posY, (int)Content.Character);
+        SetModuleContent(posX + directionHorz, posY - 1, (int)Content.Character);
 
         //모듈들 위치 갱신
         GameObject.Find("Main Camera").GetComponent<DisplayController>().DownAllModule();
@@ -179,7 +179,7 @@ public class BlockArrayManager : MonoBehaviour {
         SetModuleContent(posX, posY - 1, (int)Content.Empty);
         
         SetModuleContent(posX + directionHorz, posY + directionVert, (int)Content.Character);
-        SetModuleContent(posX + directionHorz, posY +  - 1 + directionVert, (int)Content.Character);
+        SetModuleContent(posX + directionHorz, posY - 1 + directionVert, (int)Content.Character);
     }
 
     //gameArray 내에 저장된 block들을 보여주는 테스트용 메서드
@@ -195,7 +195,7 @@ public class BlockArrayManager : MonoBehaviour {
         {
             for (int k = 0; k < ColumnCount; k++)
             {
-                if (gameArray[k, i] == 1)
+                if (gameArray[k, i] != 0)
                 {
                     GameObject point = Instantiate(pointObject, GameObject.Find("GameBoardPanel").transform);
                     point.GetComponent<RectTransform>().localPosition = new Vector3(BlockArrayManager.ModuleDistance * (k + 0.5f), -BlockArrayManager.ModuleDistance * (i + 0.5f - BlockArrayManager.unusedTopRowCount));

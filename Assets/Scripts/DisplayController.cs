@@ -50,7 +50,7 @@ public class DisplayController : MonoBehaviour {
     public void DownAllModule()
     {
         RectTransform gameBoardTransform = GameObject.Find("GameBoard").transform as RectTransform;
-        gameBoardTransform.localPosition -= Vector3.down * BlockArrayManager.ModuleDistance;
+        gameBoardTransform.localPosition += Vector3.down * BlockArrayManager.ModuleDistance;
         //배열 밖으로 나간 오브젝트들 제거하는 메서드 실행
     }
 
@@ -100,8 +100,14 @@ public class DisplayController : MonoBehaviour {
     //캐릭터 움직임 관련
     public void CharacterMove(int horzDistance, int vertDistance)
     {
-        characterObject.GetComponent<RectTransform>().position += 
-            Vector3.right * BlockArrayManager.ModuleDistance * horzDistance + 
+        //print(horzDistance + ", " + vertDistance);
+        characterObject.GetComponent<RectTransform>().localPosition +=
+            Vector3.right * BlockArrayManager.ModuleDistance * horzDistance +
             Vector3.down * BlockArrayManager.ModuleDistance * vertDistance;
+    }
+
+    public void SetCharacterObject(GameObject characterObject)
+    {
+        this.characterObject = characterObject;
     }
 }
