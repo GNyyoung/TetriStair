@@ -1,10 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
+//디버그용으로 UI 넣어놨으니 나중에 제거하자.
 public class BlockArrayManager : MonoBehaviour {
 
-    public enum Content { Empty, Block, Character}
+    public enum Content { Empty, Block, Character, ControlBlock}
 
     public const int ColumnCount = 10;
     public const int RowCount = 17;
@@ -14,11 +15,12 @@ public class BlockArrayManager : MonoBehaviour {
 
     public GameObject pointObject;
     List<GameObject> pointList = new List<GameObject>();
+    public GameObject gameBoardPosition;
     
 
 	// Use this for initialization
 	void Start () {
-        
+        gameBoardPosition.GetComponent<RectTransform>().localPosition = GameObject.Find("GameBoard").GetComponent<RectTransform>().localPosition;
     }
 	
 	// Update is called once per frame
@@ -48,38 +50,10 @@ public class BlockArrayManager : MonoBehaviour {
     {
         return gameArray;
     }
+    
 
-    //y축으로 다른 모듈에 닿기 위해 필요한 거리 계산
-    public int GetCollisionDistance(int posX, int posY)
-    {
-        int distance = 0;
-
-        while(posY < RowCount)
-        {
-            print(posX + ", " + posY);
-            if (gameArray[posX, posY + 1] == 0)
-            {
-                distance += 1;
-            }
-            else if(gameArray[posX, posY + 1] == 1)
-            {
-                return distance;
-            }
-            else if (gameArray[posX, posY + 1] == 2)
-            {
-                print("게임오버");
-                Time.timeScale = 0;
-                //게임오버 메서드 실행
-                return -1;
-            }
-            posY += 1;
-        }
-
-        return distance;
-    }
-
-    //11번 문제로 인한 GetCollisionDistance를 뜯어 고친 메서드
-    public int GetCollisionDistance2(BlockController.Module[] controlBlock)
+    //블럭이 내려가면서 다른 모듈에 닿기 위해 필요한 거리 계산
+    public int GetCollisionDistance(BlockController.Module[] controlBlock)
     {
         int moveDistance = int.MaxValue;
         int distance = 0;
@@ -92,43 +66,47 @@ public class BlockArrayManager : MonoBehaviour {
             distance = 0;
             downCount = 1;
             isLoop = true;
-            print("실행");
-            print(controlBlock[i].posY + downCount);
-            while (controlBlock[i].posY < RowCount && isLoop == true)
+            while(isLoop == true)
             {
-                switch(gameArray[controlBlock[i].posX, controlBlock[i].posY + downCount])
+                if(controlBlock[i].posY + downCount >= RowCount)
                 {
-                    case (int)BlockArrayManager.Content.Empty:
-                        print("distance 값 증가");
-                        distance += 1;
-                        break;
-                    case (int)BlockArrayManager.Content.Block:
-                        print("블럭에 막힘");
-                        if (distance < moveDistance)
-                        {
-                            print(distance);
-                            isCollideCharacter = false;
-                            moveDistance = distance;
-                        }
-                        isLoop = false;
-                        break;
-                    case (int)BlockArrayManager.Content.Character:
-                        if(distance < moveDistance)
-                        {
-                            print(distance);
-                            moveDistance = distance;
-                            isCollideCharacter = true;
-                        }
-                        isLoop = false;
-                        break;
-                    default:
-                        Debug.LogError("잘못된 값");
-                        return -1;
+                    distance = int.MaxValue;
+                    isLoop = false;
                 }
-                downCount += 1;
+                else
+                {
+                    switch (gameArray[controlBlock[i].posX, controlBlock[i].posY + downCount])
+                    {
+                        case (int)BlockArrayManager.Content.Empty:
+                            distance += 1;
+                            break;
+                        case (int)BlockArrayManager.Content.Block:
+                            if (distance < moveDistance)
+                            {
+                                isCollideCharacter = false;
+                                moveDistance = distance;
+                            }
+                            isLoop = false;
+                            break;
+                        case (int)BlockArrayManager.Content.Character:
+                            if (distance < moveDistance)
+                            {
+                                moveDistance = distance;
+                                isCollideCharacter = true;
+                            }
+                            isLoop = false;
+                            break;
+                        case (int)BlockArrayManager.Content.ControlBlock:
+                            distance += 1;
+                            break;
+                        default:
+                            Debug.LogError("잘못된 값");
+                            return -1;
+                    }
+                    downCount += 1;
+                }
             }
         }
-        
 
         if(isCollideCharacter == true)
         {
@@ -141,7 +119,7 @@ public class BlockArrayManager : MonoBehaviour {
             return moveDistance;
     }
 
-    public int GetElementContent(int posX, int posY)
+    public int GetModuleContent(int posX, int posY)
     {
         return gameArray[posX, posY];
     }
@@ -167,6 +145,8 @@ public class BlockArrayManager : MonoBehaviour {
         SetModuleContent(posX + directionHorz, posY, (int)Content.Character);
         SetModuleContent(posX + directionHorz, posY - 1, (int)Content.Character);
 
+        GetComponent<BlockController>().DownControlBlockPosition(1);
+
         //모듈들 위치 갱신
         GameObject.Find("Main Camera").GetComponent<DisplayController>().DownAllModule();
     }
@@ -185,6 +165,7 @@ public class BlockArrayManager : MonoBehaviour {
     //gameArray 내에 저장된 block들을 보여주는 테스트용 메서드
     public void ShowContent()
     {
+        print("이미지 출력");
         while(pointList.Count > 0)
         {
             Destroy(pointList[0]);
@@ -198,7 +179,16 @@ public class BlockArrayManager : MonoBehaviour {
                 if (gameArray[k, i] != 0)
                 {
                     GameObject point = Instantiate(pointObject, GameObject.Find("GameBoardPanel").transform);
-                    point.GetComponent<RectTransform>().localPosition = new Vector3(BlockArrayManager.ModuleDistance * (k + 0.5f), -BlockArrayManager.ModuleDistance * (i + 0.5f - BlockArrayManager.unusedTopRowCount));
+                    point.GetComponent<RectTransform>().localPosition = gameBoardPosition.GetComponent<RectTransform>().localPosition + new Vector3(BlockArrayManager.ModuleDistance * (k + 0.5f), -ModuleDistance * (i + 0.5f - unusedTopRowCount));
+                    if (gameArray[k, i] == (int)Content.Block)
+                        point.GetComponent<Image>().color = Color.red;
+                    else if(gameArray[k, i] == (int)Content.ControlBlock)
+                        point.GetComponent<Image>().color = Color.green;
+                    else if (gameArray[k, i] == (int)Content.Character)
+                    {
+                        point.GetComponent<Image>().color = Color.blue;
+                        print("c :" + k + ", " + i);
+                    }
                     pointList.Add(point);
                 }
             }

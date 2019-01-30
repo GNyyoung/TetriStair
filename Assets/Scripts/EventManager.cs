@@ -5,7 +5,7 @@ using UnityEngine;
 public class EventManager : MonoBehaviour {
 
     float deltaTime;
-    const float maxFallTime = 1;
+    const float maxFallTime = 2;
     const float minFallTime = 0.5f;
     float fallTime;
     float fallCooltime = 0;

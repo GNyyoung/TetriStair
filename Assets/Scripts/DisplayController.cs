@@ -14,14 +14,16 @@ public class DisplayController : MonoBehaviour {
     public GameObject moduleObject;
     public GameObject characterObject;
     List<GameObject> controlBlockObject = new List<GameObject>();     //현재 조종중인 블럭 오브젝트
-    Vector3 gameBoardPosition;
+    RectTransform gameBoardRectTransform;
+    Vector3 initialGameBoardRectPosition;
 
 
     // Use this for initialization
     void Start () {
         backgroundPanelNum = GameObject.Find("Canvas").transform.Find("Background").childCount;
         backgroundTransform = GameObject.Find("Canvas").transform.Find("Background") as RectTransform;
-        gameBoardPosition = GameObject.Find("GameBoard").GetComponent<RectTransform>().localPosition;
+        gameBoardRectTransform = GameObject.Find("GameBoard").GetComponent<RectTransform>();
+        initialGameBoardRectPosition = gameBoardRectTransform.localPosition;
     }
 	
 	// Update is called once per frame
@@ -49,27 +51,27 @@ public class DisplayController : MonoBehaviour {
     //캐릭터가 최대 높이 갱신해서 올라갈때 실행
     public void DownAllModule()
     {
-        RectTransform gameBoardTransform = GameObject.Find("GameBoard").transform as RectTransform;
-        gameBoardTransform.localPosition += Vector3.down * BlockArrayManager.ModuleDistance;
+        gameBoardRectTransform.localPosition += Vector3.down * BlockArrayManager.ModuleDistance;
         //배열 밖으로 나간 오브젝트들 제거하는 메서드 실행
+
+        GameObject[] allModuleObjects = GameObject.FindGameObjectsWithTag("Module");
+        for(int i = allModuleObjects.Length - 1; i >= 0; i--)
+        {
+            if(Mathf.Abs(allModuleObjects[i].GetComponent<RectTransform>().localPosition.y + gameBoardRectTransform.localPosition.y - initialGameBoardRectPosition.y) > GameObject.Find("GameBoardPanel").GetComponent<RectTransform>().sizeDelta.y)
+            {
+                Destroy(allModuleObjects[i]);
+            }
+        }
     }
 
     //블럭 떨어지고 나서 새로운 블럭 생성할 때 실행
     public void InstantiateNewBlock(BlockController.Module[] module)
     {
         controlBlockObject = new List<GameObject>();
-        RectTransform gameBoardRectTransform = GameObject.Find("GameBoard").GetComponent<RectTransform>();
         for (int i = 0; i < module.Length; i++)
         {
-            //controlBlock.Add(Instantiate(moduleObject,
-            //    gameBoardRectTransform.localPosition +
-            //    Vector3.right * BlockArrayManager.ModuleDistance * (module[i].posX + 0.5f) +
-            //    Vector3.down * BlockArrayManager.ModuleDistance * (module[i].posY * 0.5f),
-            //    Quaternion.identity,
-            //    gameBoardRectTransform.transform));
             controlBlockObject.Add(Instantiate(moduleObject, gameBoardRectTransform));
-            //print(module[i].posX + "," + module[i].posY);
-            controlBlockObject[i].GetComponent<RectTransform>().localPosition = new Vector3(BlockArrayManager.ModuleDistance * (module[i].posX + 0.5f), -BlockArrayManager.ModuleDistance * (module[i].posY + 0.5f - BlockArrayManager.unusedTopRowCount));
+            controlBlockObject[i].GetComponent<RectTransform>().localPosition = new Vector3(module[i].posX + 0.5f, -(module[i].posY + 0.5f - BlockArrayManager.unusedTopRowCount)) * BlockArrayManager.ModuleDistance + Vector3.down * (gameBoardRectTransform.localPosition.y - initialGameBoardRectPosition.y);
         }
 
         GameObject.Find("GameBoardPanel").GetComponent<BlockArrayManager>().ShowContent();
@@ -78,7 +80,6 @@ public class DisplayController : MonoBehaviour {
     //캐릭터 오브젝트를 생성함
     public void InstantiateCharacter(int posX, int posY)
     {
-        RectTransform gameBoardRectTransform = GameObject.Find("GameBoard").GetComponent<RectTransform>();
         GameObject character = Instantiate(characterObject);
         character.GetComponent<RectTransform>().SetParent(GameObject.Find("GameBoard").transform);
         character.GetComponent<RectTransform>().localPosition = new Vector3(BlockArrayManager.ModuleDistance * (posX + 0.5f), -BlockArrayManager.ModuleDistance * (posY - BlockArrayManager.unusedTopRowCount) - (BlockArrayManager.ModuleDistance * 2 - character.GetComponent<RectTransform>().sizeDelta.y) / 2);
@@ -109,5 +110,13 @@ public class DisplayController : MonoBehaviour {
     public void SetCharacterObject(GameObject characterObject)
     {
         this.characterObject = characterObject;
+    }
+
+    public void DestroyControlBlockObject()
+    {
+        for(int i = 0; i < controlBlockObject.Count; i++)
+        {
+            Destroy(controlBlockObject[i]);
+        }
     }
 }

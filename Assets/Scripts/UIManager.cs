@@ -19,7 +19,7 @@ public class UIManager : MonoBehaviour {
     //캐릭터 좌우 이동
     public void OnClickCharacterMove(int direction)
     {
-        character.GetComponent<CharacterAction>().Move(direction);
+        character.GetComponent<CharacterAction>().CharacterMove(direction);
     }
 
     //블럭 회전
