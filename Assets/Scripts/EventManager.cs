@@ -9,9 +9,12 @@ public class EventManager : MonoBehaviour {
     const float minFallTime = 0.5f;
     float fallTime;
     float fallCooltime = 0;
+    float sinkTime;
+    float sinkCooltime = 0;
     const float maxSinkTime = 7;
     const float minSinkTime = 1;
-    int maxClimbHeight;
+    public static int maxClimbHeight = 0;
+    int lavaHeight;
 
 	// Use this for initialization
 	void Start () {
@@ -23,7 +26,10 @@ public class EventManager : MonoBehaviour {
         deltaTime = Time.deltaTime;
         CalcFallTime();
         BlockFallCycle();
-	}
+        CalcSinkTime();
+        BoardSinkCycle();
+
+    }
 
     //블럭을 언제 1칸 떨어지게 할지 계산
     private void BlockFallCycle()
@@ -35,6 +41,17 @@ public class EventManager : MonoBehaviour {
         }
         else
             fallCooltime += deltaTime;
+    }
+
+    private void BoardSinkCycle()
+    {
+        if (sinkCooltime > sinkTime)
+        {
+            GameObject.Find("Lava").GetComponent<Lava>().UpdateLavaHeight();
+            sinkCooltime = 0;
+        }
+        else
+            sinkCooltime += deltaTime;
     }
 
     //플레이어가 층 올라갈 때마다 낙하시간 계산
@@ -49,12 +66,11 @@ public class EventManager : MonoBehaviour {
     //플레이어가 층 올라갈 때마다 가라앉는 시간 계산
     //최소 시간에 도달하면 계산 안하게 짜면 좋을듯
     //재밌을거 같은데 playerMaxHeight로 고치지 말고 둬보자
-    private float CalcSinkTime(int climbHeight)
+    private void CalcSinkTime()
     {
-        float sinkDecrement = Mathf.Pow(Mathf.Log(climbHeight, 5), 2) / 2;      //264층부터 minSinkTime이 적용됨
-        float sinkTime = sinkDecrement > maxSinkTime - minSinkTime ? minSinkTime : maxSinkTime - sinkDecrement;
-
-        return sinkTime;
+        float sinkDecrement = Mathf.Pow(Mathf.Log(maxClimbHeight + 1, 5), 2) / 2;      //264층부터 minSinkTime이 적용됨
+        sinkTime = sinkDecrement > maxSinkTime - minSinkTime ? minSinkTime : maxSinkTime - sinkDecrement;
+        
     }
 
     public void UpdateMaxClimbHeight()
@@ -65,5 +81,12 @@ public class EventManager : MonoBehaviour {
     public void ResetFallColltime()
     {
         fallCooltime = 0;
+    }
+
+    public void GameOver()
+    {
+        print("게임오버");
+        Time.timeScale = 0;
+        //그 다음 명령어
     }
 }

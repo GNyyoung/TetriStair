@@ -9,7 +9,7 @@ public class BlockRotation : MonoBehaviour {
     //기준점을 중심으로 나머지 모듈을 새로 배치한다.
 
     const int blockCount = 7;
-    const int rotation = 4;
+    public const int rotation = 4;
     const int moduleCount = 3;  //기준좌표를 갖는 모듈은 제외
     const int position = 2;
     public static int[,,,] blockMove = new int[blockCount, rotation, moduleCount, position];

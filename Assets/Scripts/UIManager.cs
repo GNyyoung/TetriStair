@@ -5,6 +5,7 @@ using UnityEngine;
 public class UIManager : MonoBehaviour {
 
     GameObject character;
+    public bool isAllowFall = true;
 
 	// Use this for initialization
 	void Start () {
@@ -34,9 +35,14 @@ public class UIManager : MonoBehaviour {
         GameObject.Find("GameBoardPanel").GetComponent<BlockController>().BlockHorzMove(direction);
     }
 
+    //블럭 빠른추락
     public void OnClickBlockFall()
     {
-        GameObject.Find("GameBoardPanel").GetComponent<BlockController>().FastFallBlock();
+        if(isAllowFall == true)
+        {
+            isAllowFall = false;
+            GameObject.Find("GameBoardPanel").GetComponent<BlockController>().FastFallBlock();
+        }
     }
 
     public void SetCharacter(GameObject character)

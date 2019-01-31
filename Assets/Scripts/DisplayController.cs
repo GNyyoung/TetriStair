@@ -16,7 +16,7 @@ public class DisplayController : MonoBehaviour {
     List<GameObject> controlBlockObject = new List<GameObject>();     //현재 조종중인 블럭 오브젝트
     RectTransform gameBoardRectTransform;
     Vector3 initialGameBoardRectPosition;
-
+    public GameObject lava;
 
     // Use this for initialization
     void Start () {
@@ -71,7 +71,10 @@ public class DisplayController : MonoBehaviour {
         for (int i = 0; i < module.Length; i++)
         {
             controlBlockObject.Add(Instantiate(moduleObject, gameBoardRectTransform));
-            controlBlockObject[i].GetComponent<RectTransform>().localPosition = new Vector3(module[i].posX + 0.5f, -(module[i].posY + 0.5f - BlockArrayManager.unusedTopRowCount)) * BlockArrayManager.ModuleDistance + Vector3.down * (gameBoardRectTransform.localPosition.y - initialGameBoardRectPosition.y);
+            controlBlockObject[i].GetComponent<RectTransform>().localPosition = 
+                new Vector3(
+                    module[i].posX + 0.5f,
+                    -(module[i].posY + 0.5f - BlockArrayManager.unusedTopRowCount)) * BlockArrayManager.ModuleDistance + Vector3.down * (gameBoardRectTransform.localPosition.y - initialGameBoardRectPosition.y);
         }
 
         GameObject.Find("GameBoardPanel").GetComponent<BlockArrayManager>().ShowContent();
@@ -82,7 +85,10 @@ public class DisplayController : MonoBehaviour {
     {
         GameObject character = Instantiate(characterObject);
         character.GetComponent<RectTransform>().SetParent(GameObject.Find("GameBoard").transform);
-        character.GetComponent<RectTransform>().localPosition = new Vector3(BlockArrayManager.ModuleDistance * (posX + 0.5f), -BlockArrayManager.ModuleDistance * (posY - BlockArrayManager.unusedTopRowCount) - (BlockArrayManager.ModuleDistance * 2 - character.GetComponent<RectTransform>().sizeDelta.y) / 2);
+        character.GetComponent<RectTransform>().localPosition = 
+            new Vector3(
+                BlockArrayManager.ModuleDistance * (posX + 0.5f), 
+                -BlockArrayManager.ModuleDistance * (posY - BlockArrayManager.unusedTopRowCount) - (BlockArrayManager.ModuleDistance * 2 - character.GetComponent<RectTransform>().sizeDelta.y) / 2);
         character.GetComponent<RectTransform>().localScale = Vector3.one;
         GameObject.Find("Canvas").GetComponent<UIManager>().SetCharacter(character);
     }
@@ -107,6 +113,21 @@ public class DisplayController : MonoBehaviour {
             Vector3.down * BlockArrayManager.ModuleDistance * vertDistance;
     }
 
+    public void UpdateRotation(BlockController.Module[] fixedModule)
+    {
+        if(controlBlockObject.Count == fixedModule.Length)
+        {
+            for(int i = 1; i < controlBlockObject.Count; i++)
+            {
+                controlBlockObject[i].GetComponent<RectTransform>().localPosition =
+                    new Vector3(
+                        fixedModule[i].posX + 0.5f,
+                        -(fixedModule[i].posY + 0.5f - BlockArrayManager.unusedTopRowCount)) * BlockArrayManager.ModuleDistance + Vector3.down * (gameBoardRectTransform.localPosition.y - initialGameBoardRectPosition.y);
+            }
+        }
+        GameObject.Find("GameBoardPanel").GetComponent<BlockArrayManager>().ShowContent();
+    }
+
     public void SetCharacterObject(GameObject characterObject)
     {
         this.characterObject = characterObject;
@@ -118,5 +139,10 @@ public class DisplayController : MonoBehaviour {
         {
             Destroy(controlBlockObject[i]);
         }
+    }
+
+    public void UpdateLavaPosition(int lavaHeight)
+    {
+        lava.GetComponent<RectTransform>().localPosition += Vector3.up * (EventManager.maxClimbHeight - lavaHeight) * BlockArrayManager.ModuleDistance;
     }
 }

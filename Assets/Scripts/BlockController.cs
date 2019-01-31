@@ -27,59 +27,73 @@ public class BlockController : MonoBehaviour {
 	}
 
     //조종중인 블럭을 회전시킨다.
-    //수정 필요!!!
-    //1. controlblock을 gameArray에서 지운다.
-    //2. 모듈 하나씩 rotation대로 위치시켜서 다른 모듈이나 캐릭터랑 충돌하는게 있는지 확인
-    //      충돌하면 처음 상태로 돌리고 return한다.
-    //3. 바뀐 위치대로 gameArray에 집어넣고 displayController에서 오브젝트 위치 변경
-    //      관련 메서드가 없어서 새로 짜야함. 회전할 때 사용한 blockRotation.blockMove 정보 필요
     public void RotateBlock()
     {
-        Module[] fixedBlock = controlBlock;
-        int standardPosX = fixedBlock[0].posX;
-        int standardPosY = fixedBlock[0].posY;
-
         int outOfBorderX = 0;           //블럭이 경계 밖으로 삐져나간 정도
-
-        if (currentRotation + 1 > 3)
+        currentRotation += 1;
+        if (currentRotation >= BlockRotation.rotation)
             currentRotation = 0;
-        else
-            currentRotation += 1;
 
-        for (int i = 1; i < fixedBlock.Length; i++)     //기준좌표는 바뀌면 안되므로 빼고 회전시킨다.
+        for (int i = 1; i < controlBlock.Length; i++)
         {
-            //새로 위치할 좌표가 비어있어야만 인덱스 수정
             if (GetComponent<BlockArrayManager>().GetModuleContent(
-                fixedBlock[i].posX + BlockRotation.blockMove[controlBlockType, currentRotation, i - 1, 0],
-                fixedBlock[i].posY + BlockRotation.blockMove[controlBlockType, currentRotation, i - 1, 1]) != 0)
+                controlBlock[i].posX + BlockRotation.blockMove[controlBlockType, currentRotation, i - 1, 0],
+                controlBlock[i].posY + BlockRotation.blockMove[controlBlockType, currentRotation, i - 1, 1]) == (int)BlockArrayManager.Content.Block)
             {
-                fixedBlock[i].posX += BlockRotation.blockMove[controlBlockType, currentRotation, i - 1, 0];
-                fixedBlock[i].posY += BlockRotation.blockMove[controlBlockType, currentRotation, i - 1, 1];
+                //print("다른 블럭에 걸림");
+                return;
+            }
+            else if(GetComponent<BlockArrayManager>().GetModuleContent(
+                controlBlock[i].posX + BlockRotation.blockMove[controlBlockType, currentRotation, i - 1, 0],
+                controlBlock[i].posY + BlockRotation.blockMove[controlBlockType, currentRotation, i - 1, 1]) == (int)BlockArrayManager.Content.Character)
+            {
+                //print("캐릭터에 걸림");
+                return;
+            }
 
-                //블럭이 얼마나 밖으로 삐져나갔는지 체크
-                if (fixedBlock[i].posX > BlockArrayManager.RowCount && fixedBlock[i].posX - BlockArrayManager.RowCount > outOfBorderX)
-                    outOfBorderX = fixedBlock[i].posX - BlockArrayManager.RowCount;
-                else if (fixedBlock[i].posX < 0 && fixedBlock[i].posX < outOfBorderX)
-                    outOfBorderX = fixedBlock[i].posX;
+            //블럭이 얼마나 밖으로 삐져나갔는지 체크
+            if (controlBlock[i].posX > BlockArrayManager.RowCount && controlBlock[i].posX - BlockArrayManager.RowCount > outOfBorderX)
+            {
+                outOfBorderX = controlBlock[i].posX - BlockArrayManager.RowCount;
+            }
+            else if(controlBlock[i].posX < 0 && -controlBlock[i].posX < outOfBorderX)
+            {
+                outOfBorderX = -controlBlock[i].posX;
             }
         }
 
         //삐져나간 만큼 이동시켰을 때 다른 모듈과 겹치는지 확인
-        for(int i = 1; i < fixedBlock.Length; i++)
+        for (int i = 1; i < controlBlock.Length; i++)
         {
-            if (GetComponent<BlockArrayManager>().GetModuleContent(fixedBlock[i].posX - outOfBorderX, fixedBlock[i].posY) != 0)
+            if (GetComponent<BlockArrayManager>().GetModuleContent(controlBlock[i].posX - outOfBorderX, controlBlock[i].posY) == (int)BlockArrayManager.Content.Block)
                 return;
-            else
-                fixedBlock[i].posX -= outOfBorderX;
+            else if (GetComponent<BlockArrayManager>().GetModuleContent(controlBlock[i].posX - outOfBorderX, controlBlock[i].posY) == (int)BlockArrayManager.Content.Character)
+                return;
+            //print("다른 모듈과 안겹침");
         }
 
-        for(int i = 0; i < fixedBlock.Length; i++)
+        for (int i = 0; i < controlBlock.Length; i++)
         {
-            GetComponent<BlockArrayManager>().SetModuleContent(controlBlock[i].posX, controlBlock[i].posY, (int)BlockArrayManager.Content.Empty);
-            GetComponent<BlockArrayManager>().SetModuleContent(fixedBlock[i].posX, fixedBlock[i].posY, (int)BlockArrayManager.Content.ControlBlock);
+            if (i == 0)
+            {
+                controlBlock[i].posX -= outOfBorderX;
+                print(controlBlock[i].posX + ", " + controlBlock[i].posY);
+                print(GetComponent<BlockArrayManager>().GetModuleContent(controlBlock[i].posX, controlBlock[i].posY));
+            }
+            else
+            {
+                GetComponent<BlockArrayManager>().SetModuleContent(controlBlock[i].posX, controlBlock[i].posY, (int)BlockArrayManager.Content.Empty);
+                controlBlock[i].posX = controlBlock[0].posX + BlockRotation.blockMove[controlBlockType, currentRotation, i - 1, 0] - outOfBorderX;
+                controlBlock[i].posY = controlBlock[0].posY + BlockRotation.blockMove[controlBlockType, currentRotation, i - 1, 1];
+                GetComponent<BlockArrayManager>().SetModuleContent(controlBlock[i].posX, controlBlock[i].posY, (int)BlockArrayManager.Content.ControlBlock);
+                print(controlBlock[i].posX + ", " + controlBlock[i].posY);
+                print(GetComponent<BlockArrayManager>().GetModuleContent(controlBlock[i].posX, controlBlock[i].posY));
+            }
         }
-        controlBlock = fixedBlock;
-        //BlockArrayManager의 gameArray를 업데이트하는 메서드 추가할것
+
+        //블럭 오브젝트 위치 업데이트 필요
+        GameObject.Find("Main Camera").GetComponent<DisplayController>().UpdateRotation(controlBlock);
+        GameObject.Find("GameBoardPanel").GetComponent<BlockArrayManager>().ShowContent();
     }
 
     //블럭이 시간에 따라 자동으로 내려갈 때 사용하는 메서드
@@ -102,6 +116,10 @@ public class BlockController : MonoBehaviour {
             else if (GetComponent<BlockArrayManager>().GetModuleContent(controlBlock[i].posX, controlBlock[i].posY + 1) == (int)BlockArrayManager.Content.Block)
             {
                 //블럭이 다른 모듈에 막혀서 내려갈 수 없을 때
+                for(int k = 0; k < controlBlock.Length; k++)
+                {
+                    GetComponent<BlockArrayManager>().SetModuleContent(controlBlock[k].posX, controlBlock[k].posY, (int)BlockArrayManager.Content.Block);
+                }
                 Invoke("ChangeControlBlock", 0.5f);
                 //Invoke("ChangeControlBlock()", EventManager.fallPeriod); //블럭 낙하주기만큼 기다린 후에 다음 블럭을 생성한다.
                 return;
@@ -109,8 +127,7 @@ public class BlockController : MonoBehaviour {
             else if(GetComponent<BlockArrayManager>().GetModuleContent(controlBlock[i].posX, controlBlock[i].posY + 1) == (int)BlockArrayManager.Content.Character)
             {
                 //캐릭터가 떨어지는 블럭에 맞아 게임오버
-                //블럭이 다른 모듈에 막혀서 내려갈 수 없을 때
-                Time.timeScale = 0;
+                GameObject.Find("Main Camera").GetComponent<EventManager>().GameOver();
                 return;
             }
         }
@@ -153,7 +170,7 @@ public class BlockController : MonoBehaviour {
         }
         else if(moveDistance == -1)
         {
-            //게임오버될때
+            GameObject.Find("Main Camera").GetComponent<EventManager>().GameOver();
             return;
         }
 
@@ -175,18 +192,25 @@ public class BlockController : MonoBehaviour {
         Invoke("ChangeControlBlock", 0.5f);
         //Invoke("ChangeControlBlock()", EventManager.fallPeriod); //블럭 낙하주기만큼 기다린 후에 다음 블럭을 생성한다.
         GetComponent<BlockArrayManager>().ShowContent();
-
     }
 
     //블럭을 새로 생성하여 조종 가능하도록 바꿈
     public void ChangeControlBlock()
     {
         Debug.Log("블럭 교체");
-        controlBlockType = Random.Range(0, 6);
+        controlBlockType = Random.Range(0, 7);
         controlBlock = new Module[4];
         controlBlock[0].posX = blockStartPosX;
         controlBlock[0].posY = blockStartPosY;
         GetComponent<BlockArrayManager>().SetModuleContent(controlBlock[0].posX, controlBlock[0].posY, (int)BlockArrayManager.Content.ControlBlock);
+
+        for (int i = 0; i < controlBlock.Length; i++)
+        {
+            if (GetComponent<BlockArrayManager>().GetModuleContent(controlBlock[i].posX, controlBlock[i].posY) == (int)BlockArrayManager.Content.Block)
+            {
+                GameObject.Find("Main Camera").GetComponent<EventManager>().GameOver();
+            }
+        }
 
         for (int i = 1; i < controlBlock.Length; i++)
         {
@@ -197,6 +221,7 @@ public class BlockController : MonoBehaviour {
         }
 
         GameObject.Find("Main Camera").GetComponent<DisplayController>().InstantiateNewBlock(controlBlock);
+        GameObject.Find("Canvas").GetComponent<UIManager>().isAllowFall = true;
     }
 
     //블럭을 좌우로 이동시키는 메서드

@@ -165,7 +165,6 @@ public class BlockArrayManager : MonoBehaviour {
     //gameArray 내에 저장된 block들을 보여주는 테스트용 메서드
     public void ShowContent()
     {
-        print("이미지 출력");
         while(pointList.Count > 0)
         {
             Destroy(pointList[0]);
@@ -187,7 +186,6 @@ public class BlockArrayManager : MonoBehaviour {
                     else if (gameArray[k, i] == (int)Content.Character)
                     {
                         point.GetComponent<Image>().color = Color.blue;
-                        print("c :" + k + ", " + i);
                     }
                     pointList.Add(point);
                 }

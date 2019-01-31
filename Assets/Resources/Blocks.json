@@ -44,126 +44,126 @@
 		},
 		{
 			"BlockNum": 0,
-			"Rotation": 0,
+			"Rotation": 1,
 			"ModuleNum": 0,
 			"Position": 0,
 			"Value": -1
 		},
 		{
 			"BlockNum": 0,
-			"Rotation": 0,
+			"Rotation": 1,
 			"ModuleNum": 0,
 			"Position": 1,
 			"Value": 0
 		},
 		{
 			"BlockNum": 0,
-			"Rotation": 0,
+			"Rotation": 1,
 			"ModuleNum": 1,
 			"Position": 0,
 			"Value": -1
 		},
 		{
 			"BlockNum": 0,
-			"Rotation": 0,
+			"Rotation": 1,
 			"ModuleNum": 1,
 			"Position": 1,
 			"Value": -1
 		},
 		{
 			"BlockNum": 0,
-			"Rotation": 0,
+			"Rotation": 1,
 			"ModuleNum": 2,
 			"Position": 0,
 			"Value": 0
 		},
 		{
 			"BlockNum": 0,
-			"Rotation": 0,
+			"Rotation": 1,
 			"ModuleNum": 2,
 			"Position": 1,
 			"Value": -1
 		},
 		{
 			"BlockNum": 0,
-			"Rotation": 0,
+			"Rotation": 2,
 			"ModuleNum": 0,
 			"Position": 0,
 			"Value": -1
 		},
 		{
 			"BlockNum": 0,
-			"Rotation": 0,
+			"Rotation": 2,
 			"ModuleNum": 0,
 			"Position": 1,
 			"Value": 0
 		},
 		{
 			"BlockNum": 0,
-			"Rotation": 0,
+			"Rotation": 2,
 			"ModuleNum": 1,
 			"Position": 0,
 			"Value": -1
 		},
 		{
 			"BlockNum": 0,
-			"Rotation": 0,
+			"Rotation": 2,
 			"ModuleNum": 1,
 			"Position": 1,
 			"Value": -1
 		},
 		{
 			"BlockNum": 0,
-			"Rotation": 0,
+			"Rotation": 2,
 			"ModuleNum": 2,
 			"Position": 0,
 			"Value": 0
 		},
 		{
 			"BlockNum": 0,
-			"Rotation": 0,
+			"Rotation": 2,
 			"ModuleNum": 2,
 			"Position": 1,
 			"Value": -1
 		},
 		{
 			"BlockNum": 0,
-			"Rotation": 0,
+			"Rotation": 3,
 			"ModuleNum": 0,
 			"Position": 0,
 			"Value": -1
 		},
 		{
 			"BlockNum": 0,
-			"Rotation": 0,
+			"Rotation": 3,
 			"ModuleNum": 0,
 			"Position": 1,
 			"Value": 0
 		},
 		{
 			"BlockNum": 0,
-			"Rotation": 0,
+			"Rotation": 3,
 			"ModuleNum": 1,
 			"Position": 0,
 			"Value": -1
 		},
 		{
 			"BlockNum": 0,
-			"Rotation": 0,
+			"Rotation": 3,
 			"ModuleNum": 1,
 			"Position": 1,
 			"Value": -1
 		},
 		{
 			"BlockNum": 0,
-			"Rotation": 0,
+			"Rotation": 3,
 			"ModuleNum": 2,
 			"Position": 0,
 			"Value": 0
 		},
 		{
 			"BlockNum": 0,
-			"Rotation": 0,
+			"Rotation": 3,
 			"ModuleNum": 2,
 			"Position": 1,
 			"Value": -1
@@ -271,7 +271,7 @@
 			"Rotation": 2,
 			"ModuleNum": 1,
 			"Position": 0,
-			"Value": -1
+			"Value": 0
 		},
 		{
 			"BlockNum": 1,
@@ -292,19 +292,19 @@
 			"Rotation": 2,
 			"ModuleNum": 2,
 			"Position": 1,
-			"Value": 0
-		},
-		{
-			"BlockNum": 1,
-			"Rotation": 3,
-			"ModuleNum": 0,
-			"Position": 0,
 			"Value": 0
 		},
 		{
 			"BlockNum": 1,
 			"Rotation": 3,
 			"ModuleNum": 0,
+			"Position": 0,
+			"Value": 0
+		},
+		{
+			"BlockNum": 1,
+			"Rotation": 3,
+			"ModuleNum": 0,
 			"Position": 1,
 			"Value": 1
 		},
@@ -320,19 +320,19 @@
 			"Rotation": 3,
 			"ModuleNum": 1,
 			"Position": 1,
-			"Value": -1
-		},
-		{
-			"BlockNum": 1,
-			"Rotation": 3,
-			"ModuleNum": 2,
-			"Position": 0,
 			"Value": 0
 		},
 		{
 			"BlockNum": 1,
 			"Rotation": 3,
 			"ModuleNum": 2,
+			"Position": 0,
+			"Value": 0
+		},
+		{
+			"BlockNum": 1,
+			"Rotation": 3,
+			"ModuleNum": 2,
 			"Position": 1,
 			"Value": -1
 		},
@@ -758,171 +758,87 @@
 		},
 		{
 			"BlockNum": 4,
-			"Rotation": 0,
+			"Rotation": 2,
 			"ModuleNum": 0,
 			"Position": 0,
 			"Value": -1
 		},
 		{
 			"BlockNum": 4,
-			"Rotation": 0,
+			"Rotation": 2,
 			"ModuleNum": 0,
 			"Position": 1,
 			"Value": -1
 		},
 		{
 			"BlockNum": 4,
-			"Rotation": 0,
+			"Rotation": 2,
 			"ModuleNum": 1,
 			"Position": 0,
 			"Value": 0
 		},
 		{
 			"BlockNum": 4,
-			"Rotation": 0,
+			"Rotation": 2,
 			"ModuleNum": 1,
 			"Position": 1,
 			"Value": -1
 		},
 		{
 			"BlockNum": 4,
-			"Rotation": 0,
+			"Rotation": 2,
 			"ModuleNum": 2,
 			"Position": 0,
 			"Value": 1
 		},
 		{
 			"BlockNum": 4,
-			"Rotation": 0,
+			"Rotation": 2,
 			"ModuleNum": 2,
 			"Position": 1,
 			"Value": 0
 		},
 		{
 			"BlockNum": 4,
-			"Rotation": 1,
+			"Rotation": 3,
 			"ModuleNum": 0,
 			"Position": 0,
 			"Value": 1
 		},
 		{
 			"BlockNum": 4,
-			"Rotation": 1,
+			"Rotation": 3,
 			"ModuleNum": 0,
 			"Position": 1,
 			"Value": -1
 		},
 		{
 			"BlockNum": 4,
-			"Rotation": 1,
+			"Rotation": 3,
 			"ModuleNum": 1,
 			"Position": 0,
 			"Value": 1
 		},
 		{
 			"BlockNum": 4,
-			"Rotation": 1,
+			"Rotation": 3,
 			"ModuleNum": 1,
 			"Position": 1,
 			"Value": 0
 		},
 		{
 			"BlockNum": 4,
-			"Rotation": 1,
+			"Rotation": 3,
 			"ModuleNum": 2,
 			"Position": 0,
 			"Value": 0
 		},
 		{
 			"BlockNum": 4,
-			"Rotation": 1,
+			"Rotation": 3,
 			"ModuleNum": 2,
 			"Position": 1,
 			"Value": 1
-		},
-		{
-			"BlockNum": 5,
-			"Rotation": 0,
-			"ModuleNum": 0,
-			"Position": 0,
-			"Value": -1
-		},
-		{
-			"BlockNum": 5,
-			"Rotation": 0,
-			"ModuleNum": 0,
-			"Position": 1,
-			"Value": 0
-		},
-		{
-			"BlockNum": 5,
-			"Rotation": 0,
-			"ModuleNum": 1,
-			"Position": 0,
-			"Value": 0
-		},
-		{
-			"BlockNum": 5,
-			"Rotation": 0,
-			"ModuleNum": 1,
-			"Position": 1,
-			"Value": -1
-		},
-		{
-			"BlockNum": 5,
-			"Rotation": 0,
-			"ModuleNum": 2,
-			"Position": 0,
-			"Value": 1
-		},
-		{
-			"BlockNum": 5,
-			"Rotation": 0,
-			"ModuleNum": 2,
-			"Position": 1,
-			"Value": -1
-		},
-		{
-			"BlockNum": 5,
-			"Rotation": 1,
-			"ModuleNum": 0,
-			"Position": 0,
-			"Value": 0
-		},
-		{
-			"BlockNum": 5,
-			"Rotation": 1,
-			"ModuleNum": 0,
-			"Position": 1,
-			"Value": 1
-		},
-		{
-			"BlockNum": 5,
-			"Rotation": 1,
-			"ModuleNum": 1,
-			"Position": 0,
-			"Value": -1
-		},
-		{
-			"BlockNum": 5,
-			"Rotation": 1,
-			"ModuleNum": 1,
-			"Position": 1,
-			"Value": 0
-		},
-		{
-			"BlockNum": 5,
-			"Rotation": 1,
-			"ModuleNum": 2,
-			"Position": 0,
-			"Value": -1
-		},
-		{
-			"BlockNum": 5,
-			"Rotation": 1,
-			"ModuleNum": 2,
-			"Position": 1,
-			"Value": -1
 		},
 		{
 			"BlockNum": 5,
@@ -1004,6 +920,90 @@
 		{
 			"BlockNum": 5,
 			"Rotation": 1,
+			"ModuleNum": 2,
+			"Position": 1,
+			"Value": -1
+		},
+		{
+			"BlockNum": 5,
+			"Rotation": 2,
+			"ModuleNum": 0,
+			"Position": 0,
+			"Value": -1
+		},
+		{
+			"BlockNum": 5,
+			"Rotation": 2,
+			"ModuleNum": 0,
+			"Position": 1,
+			"Value": 0
+		},
+		{
+			"BlockNum": 5,
+			"Rotation": 2,
+			"ModuleNum": 1,
+			"Position": 0,
+			"Value": 0
+		},
+		{
+			"BlockNum": 5,
+			"Rotation": 2,
+			"ModuleNum": 1,
+			"Position": 1,
+			"Value": -1
+		},
+		{
+			"BlockNum": 5,
+			"Rotation": 2,
+			"ModuleNum": 2,
+			"Position": 0,
+			"Value": 1
+		},
+		{
+			"BlockNum": 5,
+			"Rotation": 2,
+			"ModuleNum": 2,
+			"Position": 1,
+			"Value": -1
+		},
+		{
+			"BlockNum": 5,
+			"Rotation": 3,
+			"ModuleNum": 0,
+			"Position": 0,
+			"Value": 0
+		},
+		{
+			"BlockNum": 5,
+			"Rotation": 3,
+			"ModuleNum": 0,
+			"Position": 1,
+			"Value": 1
+		},
+		{
+			"BlockNum": 5,
+			"Rotation": 3,
+			"ModuleNum": 1,
+			"Position": 0,
+			"Value": -1
+		},
+		{
+			"BlockNum": 5,
+			"Rotation": 3,
+			"ModuleNum": 1,
+			"Position": 1,
+			"Value": 0
+		},
+		{
+			"BlockNum": 5,
+			"Rotation": 3,
+			"ModuleNum": 2,
+			"Position": 0,
+			"Value": -1
+		},
+		{
+			"BlockNum": 5,
+			"Rotation": 3,
 			"ModuleNum": 2,
 			"Position": 1,
 			"Value": -1
@@ -1094,84 +1094,84 @@
 		},
 		{
 			"BlockNum": 6,
-			"Rotation": 0,
+			"Rotation": 2,
 			"ModuleNum": 0,
 			"Position": 0,
 			"Value": -1
 		},
 		{
 			"BlockNum": 6,
-			"Rotation": 0,
+			"Rotation": 2,
 			"ModuleNum": 0,
 			"Position": 1,
 			"Value": 0
 		},
 		{
 			"BlockNum": 6,
-			"Rotation": 0,
+			"Rotation": 2,
 			"ModuleNum": 1,
 			"Position": 0,
 			"Value": 1
 		},
 		{
 			"BlockNum": 6,
-			"Rotation": 0,
+			"Rotation": 2,
 			"ModuleNum": 1,
 			"Position": 1,
 			"Value": 0
 		},
 		{
 			"BlockNum": 6,
-			"Rotation": 0,
+			"Rotation": 2,
 			"ModuleNum": 2,
 			"Position": 0,
 			"Value": 2
 		},
 		{
 			"BlockNum": 6,
-			"Rotation": 0,
+			"Rotation": 2,
 			"ModuleNum": 2,
 			"Position": 1,
 			"Value": 0
 		},
 		{
 			"BlockNum": 6,
-			"Rotation": 1,
+			"Rotation": 3,
 			"ModuleNum": 0,
 			"Position": 0,
 			"Value": 0
 		},
 		{
 			"BlockNum": 6,
-			"Rotation": 1,
+			"Rotation": 3,
 			"ModuleNum": 0,
 			"Position": 1,
 			"Value": 1
 		},
 		{
 			"BlockNum": 6,
-			"Rotation": 1,
+			"Rotation": 3,
 			"ModuleNum": 1,
 			"Position": 0,
 			"Value": 0
 		},
 		{
 			"BlockNum": 6,
-			"Rotation": 1,
+			"Rotation": 3,
 			"ModuleNum": 1,
 			"Position": 1,
 			"Value": -1
 		},
 		{
 			"BlockNum": 6,
-			"Rotation": 1,
+			"Rotation": 3,
 			"ModuleNum": 2,
 			"Position": 0,
 			"Value": 0
 		},
 		{
 			"BlockNum": 6,
-			"Rotation": 1,
+			"Rotation": 3,
 			"ModuleNum": 2,
 			"Position": 1,
 			"Value": -2
