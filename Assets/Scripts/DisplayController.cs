@@ -45,7 +45,7 @@ public class DisplayController : MonoBehaviour {
     //배경을 움직임
     public void BackgroundMove()
     {
-        backgroundTransform.localPosition -= Vector3.down * BlockArrayManager.ModuleDistance;
+        backgroundTransform.localPosition += Vector3.down * BlockArrayManager.ModuleDistance;
     }
 
     //캐릭터가 최대 높이 갱신해서 올라갈때 실행
@@ -79,7 +79,17 @@ public class DisplayController : MonoBehaviour {
 
         GameObject.Find("GameBoardPanel").GetComponent<BlockArrayManager>().ShowContent();
     }
-    
+
+    public void InstantiateNewModule(int posX, int posY)
+    {
+        GameObject newModule = Instantiate(moduleObject, gameBoardRectTransform);
+        newModule.GetComponent<RectTransform>().localPosition = 
+            new Vector3(posX + 0.5f, -(posY + 0.5f - BlockArrayManager.unusedTopRowCount)) * BlockArrayManager.ModuleDistance +
+            Vector3.down * (gameBoardRectTransform.localPosition.y - initialGameBoardRectPosition.y);
+
+        GameObject.Find("GameBoardPanel").GetComponent<BlockArrayManager>().ShowContent();
+    }
+
     //캐릭터 오브젝트를 생성함
     public void InstantiateCharacter(int posX, int posY)
     {

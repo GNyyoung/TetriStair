@@ -93,6 +93,7 @@
     <Compile Include="Assets\Scripts\EventManager.cs" />
     <Compile Include="Assets\Scripts\GameStart.cs" />
     <Compile Include="Assets\Scripts\Lava.cs" />
+    <Compile Include="Assets\Scripts\NaturalBlockCreator.cs" />
     <Compile Include="Assets\Scripts\UIManager.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

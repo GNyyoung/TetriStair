@@ -8,8 +8,8 @@ public class BlockArrayManager : MonoBehaviour {
     public enum Content { Empty, Block, Character, ControlBlock}
 
     public const int ColumnCount = 10;
-    public const int RowCount = 17;
-    public const int unusedTopRowCount = 3;
+    public const int RowCount = 21;
+    public const int unusedTopRowCount = 7;
     public const int ModuleDistance = 100;            //두 좌표 사이의 간격
     private int[,] gameArray = new int[ColumnCount, RowCount];   //맨 위 3칸은 안보이게 한다. 
 
@@ -135,7 +135,7 @@ public class BlockArrayManager : MonoBehaviour {
     {
         SetModuleContent(posX, posY, (int)Content.Empty);
         SetModuleContent(posX, posY - 1, (int)Content.Empty);
-        for (int row = RowCount - 2; row >= unusedTopRowCount; row--)
+        for (int row = RowCount - 2; row >= 0; row--)
         {
             for (int col = ColumnCount - 1; col >= 0; col--)
             {

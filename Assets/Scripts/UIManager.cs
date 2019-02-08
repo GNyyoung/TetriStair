@@ -14,7 +14,7 @@ public class UIManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+        KeyBoardControl();
 	}
 
     //캐릭터 좌우 이동
@@ -48,5 +48,21 @@ public class UIManager : MonoBehaviour {
     public void SetCharacter(GameObject character)
     {
         this.character = character;
+    }
+
+    public void KeyBoardControl()
+    {
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+            OnClickRotate();
+        else if (Input.GetKeyDown(KeyCode.DownArrow))
+            OnClickBlockFall();
+        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+            OnClickBlockMove(-1);
+        else if (Input.GetKeyDown(KeyCode.RightArrow))
+            OnClickBlockMove(1);
+        else if (Input.GetKeyDown(KeyCode.A))
+            OnClickCharacterMove(-1);
+        else if (Input.GetKeyDown(KeyCode.D))
+            OnClickCharacterMove(1);
     }
 }

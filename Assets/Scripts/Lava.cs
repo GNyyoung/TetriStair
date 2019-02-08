@@ -5,6 +5,8 @@ using UnityEngine;
 public class Lava : MonoBehaviour {
 
     int lavaHeight;
+    public float sinkTime;
+    public int maxHeight;
 
 	// Use this for initialization
 	void Start () {
@@ -13,12 +15,12 @@ public class Lava : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
-	}
 
-    public void UpdateLavaHeight()
+    }
+
+    public void UpdateLavaHeight(int directionVert)
     {
-        GetComponent<RectTransform>().localPosition += Vector3.up * BlockArrayManager.ModuleDistance;
+        GetComponent<RectTransform>().localPosition += Vector3.up * BlockArrayManager.ModuleDistance * directionVert;
     }
 
     public void CheckFallLava()
@@ -28,5 +30,11 @@ public class Lava : MonoBehaviour {
         {
             GameObject.Find("Main Camera").GetComponent<EventManager>().GameOver();
         }
+    }
+
+    //테스트용 메서드. 나중에 삭제
+    public void SetMaxHeight(int height)
+    {
+        maxHeight = height;
     }
 }

@@ -8,12 +8,12 @@ public class BlockController : MonoBehaviour {
     int controlBlockType;
     int currentRotation = 0;
     public static int blockStartPosX = Mathf.CeilToInt(BlockArrayManager.ColumnCount / 2);
-    public static int blockStartPosY = 3;
+    public static int blockStartPosY = BlockArrayManager.unusedTopRowCount;
+    float blockChangeTime = 0.5f;       //블럭이 추락한 후 교체에 걸리는 시간
 
     public struct Module
     {
         public int posX, posY;
-        public bool isControlBlock;
     }
 
 	// Use this for initialization
@@ -109,7 +109,7 @@ public class BlockController : MonoBehaviour {
                     GetComponent<BlockArrayManager>().SetModuleContent(controlBlock[k].posX, controlBlock[k].posY, (int)BlockArrayManager.Content.Empty);
                 }
                 GameObject.Find("Main Camera").GetComponent<DisplayController>().DestroyControlBlockObject();
-                Invoke("ChangeControlBlock", 0.5f);
+                Invoke("ChangeControlBlock", blockChangeTime);
                 GetComponent<BlockArrayManager>().ShowContent();
                 return;
             }
@@ -120,7 +120,7 @@ public class BlockController : MonoBehaviour {
                 {
                     GetComponent<BlockArrayManager>().SetModuleContent(controlBlock[k].posX, controlBlock[k].posY, (int)BlockArrayManager.Content.Block);
                 }
-                Invoke("ChangeControlBlock", 0.5f);
+                Invoke("ChangeControlBlock", blockChangeTime);
                 //Invoke("ChangeControlBlock()", EventManager.fallPeriod); //블럭 낙하주기만큼 기다린 후에 다음 블럭을 생성한다.
                 return;
             }
@@ -131,7 +131,7 @@ public class BlockController : MonoBehaviour {
                 return;
             }
         }
-        //controlBlock을 1만큼 이동시키는 메서드 실행
+
         for (int i = 0; i < controlBlock.Length; i++)
         {
             //print("모듈 제거" + i);
@@ -164,7 +164,7 @@ public class BlockController : MonoBehaviour {
                 GetComponent<BlockArrayManager>().SetModuleContent(controlBlock[i].posX, controlBlock[i].posY, (int)BlockArrayManager.Content.Empty);
             }
             GameObject.Find("Main Camera").GetComponent<DisplayController>().DestroyControlBlockObject();
-            Invoke("ChangeControlBlock", 0.5f);
+            Invoke("ChangeControlBlock", blockChangeTime);
             GetComponent<BlockArrayManager>().ShowContent();
             return;
         }
@@ -189,7 +189,7 @@ public class BlockController : MonoBehaviour {
         GameObject.Find("Main Camera").GetComponent<DisplayController>().MoveBlock(0, moveDistance);
 
         GameObject.Find("Main Camera").GetComponent<EventManager>().ResetFallColltime();
-        Invoke("ChangeControlBlock", 0.5f);
+        Invoke("ChangeControlBlock", blockChangeTime);
         //Invoke("ChangeControlBlock()", EventManager.fallPeriod); //블럭 낙하주기만큼 기다린 후에 다음 블럭을 생성한다.
         GetComponent<BlockArrayManager>().ShowContent();
     }
@@ -198,6 +198,7 @@ public class BlockController : MonoBehaviour {
     public void ChangeControlBlock()
     {
         Debug.Log("블럭 교체");
+
         controlBlockType = Random.Range(0, 7);
         controlBlock = new Module[4];
         controlBlock[0].posX = blockStartPosX;
@@ -255,16 +256,22 @@ public class BlockController : MonoBehaviour {
         GetComponent<BlockArrayManager>().ShowContent();
     }
 
+    //블럭 등반 때 컨트롤블럭 모듈 내의 position을 변경해주는 메서드
     public void DownControlBlockPosition(int directionVert)
     {
-        for (int i = 0; i < controlBlock.Length; i++)
+        //for (int i = 0; i < controlBlock.Length; i++)
+        //{
+        //    GetComponent<BlockArrayManager>().SetModuleContent(controlBlock[i].posX, controlBlock[i].posY, (int)BlockArrayManager.Content.Empty);
+        //}
+        //for (int i = 0; i < controlBlock.Length; i++)
+        //{
+        //    controlBlock[i].posY += directionVert;
+        //    GetComponent<BlockArrayManager>().SetModuleContent(controlBlock[i].posX, controlBlock[i].posY, (int)BlockArrayManager.Content.ControlBlock);
+        //}
+
+        for(int i = 0; i < controlBlock.Length; i++)
         {
-            GetComponent<BlockArrayManager>().SetModuleContent(controlBlock[i].posX, controlBlock[i].posY, (int)BlockArrayManager.Content.Empty);
-        }
-        for (int i = 0; i < controlBlock.Length; i++)
-        {
-            controlBlock[i].posY += directionVert;
-            GetComponent<BlockArrayManager>().SetModuleContent(controlBlock[i].posX, controlBlock[i].posY, (int)BlockArrayManager.Content.ControlBlock);
+            controlBlock[i].posY += 1;
         }
     }
 }

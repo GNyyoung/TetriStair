@@ -61,6 +61,8 @@ public class CharacterAction : MonoBehaviour {
                 maxClimbHeight = climbHeight;
                 posX += directionHorz;
                 GameObject.Find("Main Camera").GetComponent<DisplayController>().CharacterMove(directionHorz, directionVert);
+                GameObject.Find("Lava").GetComponent<Lava>().UpdateLavaHeight(-1);
+                GameObject.Find("Main Camera").GetComponent<EventManager>().UpdateMaxClimbHeight();
             }
             else
             {

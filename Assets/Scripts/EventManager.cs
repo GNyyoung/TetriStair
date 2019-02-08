@@ -11,10 +11,12 @@ public class EventManager : MonoBehaviour {
     float fallCooltime = 0;
     float sinkTime;
     float sinkCooltime = 0;
-    const float maxSinkTime = 7;
-    const float minSinkTime = 1;
+    const float maxSinkTime = 5;
+    const float minSinkTime = 1.5f;
     public static int maxClimbHeight = 0;
     int lavaHeight;
+    const int naturalBlockCycle = 20;
+    bool isCreateNaturalBlock = false;
 
 	// Use this for initialization
 	void Start () {
@@ -28,7 +30,7 @@ public class EventManager : MonoBehaviour {
         BlockFallCycle();
         CalcSinkTime();
         BoardSinkCycle();
-
+        CreateNaturalBlock();
     }
 
     //블럭을 언제 1칸 떨어지게 할지 계산
@@ -47,7 +49,7 @@ public class EventManager : MonoBehaviour {
     {
         if (sinkCooltime > sinkTime)
         {
-            GameObject.Find("Lava").GetComponent<Lava>().UpdateLavaHeight();
+            GameObject.Find("Lava").GetComponent<Lava>().UpdateLavaHeight(1);
             sinkCooltime = 0;
         }
         else
@@ -68,14 +70,15 @@ public class EventManager : MonoBehaviour {
     //재밌을거 같은데 playerMaxHeight로 고치지 말고 둬보자
     private void CalcSinkTime()
     {
-        float sinkDecrement = Mathf.Pow(Mathf.Log(maxClimbHeight + 1, 5), 2) / 2;      //264층부터 minSinkTime이 적용됨
+        float sinkDecrement = Mathf.Pow(Mathf.Log(maxClimbHeight + 1, 3), 1.5f) / 2;      //317층부터 minSinkTime이 적용됨
         sinkTime = sinkDecrement > maxSinkTime - minSinkTime ? minSinkTime : maxSinkTime - sinkDecrement;
-        
+        GameObject.Find("Lava").GetComponent<Lava>().sinkTime = sinkTime;
     }
 
     public void UpdateMaxClimbHeight()
     {
         maxClimbHeight += 1;
+        GameObject.Find("Lava").GetComponent<Lava>().SetMaxHeight(maxClimbHeight);
     }
 
     public void ResetFallColltime()
@@ -88,5 +91,18 @@ public class EventManager : MonoBehaviour {
         print("게임오버");
         Time.timeScale = 0;
         //그 다음 명령어
+    }
+
+    //플레이어가 일정 높이를 올라갈 때마다 자연블럭을 생성함
+    void CreateNaturalBlock()
+    {
+        
+        if(maxClimbHeight % naturalBlockCycle != 0)
+            isCreateNaturalBlock = true;
+        else if (isCreateNaturalBlock == true)
+        {
+            GetComponent<NaturalBlockCreator>().CreateNaturalBlock();
+            isCreateNaturalBlock = false;
+        }
     }
 }

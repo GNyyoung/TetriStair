@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameStart : MonoBehaviour {
 
-    const int floorPosY = 14;
+    const int floorPosY = BlockArrayManager.RowCount - 3;
 
 	// Use this for initialization
 	void Start () {
@@ -19,7 +19,7 @@ public class GameStart : MonoBehaviour {
         {
             gameBoardPanel.GetComponent<BlockArrayManager>().SetModuleContent(col, floorPosY, (int)BlockArrayManager.Content.Block);
             startingModules[col].posX = col;
-            startingModules[col].posY = 14;
+            startingModules[col].posY = floorPosY;
         }
 
         //캐릭터 위치 세팅
