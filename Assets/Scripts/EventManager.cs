@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+//나중에 ui 제거
 
 public class EventManager : MonoBehaviour {
 
@@ -11,12 +13,14 @@ public class EventManager : MonoBehaviour {
     float fallCooltime = 0;
     float sinkTime;
     float sinkCooltime = 0;
-    const float maxSinkTime = 5;
-    const float minSinkTime = 1.5f;
-    public static int maxClimbHeight = 0;
+    const float maxSinkTime = 5;                //용암 상승 주기의 최초 시간
+    const float minSinkTime = 2.0f;             //용암 상승 주기의 최소 시간
+    public static int maxClimbHeight = 0;       //플레이어가 올라간 최대 높이
     int lavaHeight;
-    const int naturalBlockCycle = 20;
+    const int naturalBlockCycle = 15;           //자연블럭이 몇층 올라갈 때마다 생기는가
     bool isCreateNaturalBlock = false;
+    float sinkStopCooltime = 0;       //0이 아니면 0이하로 될때까지 용암 상승을 막음
+    float sinkStopTime = 7.0f;
 
 	// Use this for initialization
 	void Start () {
@@ -45,15 +49,21 @@ public class EventManager : MonoBehaviour {
             fallCooltime += deltaTime;
     }
 
+    //용암 상승을 관리하는 메서드
     private void BoardSinkCycle()
     {
-        if (sinkCooltime > sinkTime)
+        if (sinkStopCooltime <= 0)
         {
-            GameObject.Find("Lava").GetComponent<Lava>().UpdateLavaHeight(1);
-            sinkCooltime = 0;
+            if (sinkCooltime > sinkTime)
+            {
+                GameObject.Find("Lava").GetComponent<Lava>().UpdateLavaHeight(1);
+                sinkCooltime = 0;
+            }
+            else
+                sinkCooltime += deltaTime;
         }
         else
-            sinkCooltime += deltaTime;
+            sinkStopCooltime -= deltaTime;
     }
 
     //플레이어가 층 올라갈 때마다 낙하시간 계산
@@ -63,16 +73,18 @@ public class EventManager : MonoBehaviour {
         fallTime = maxFallTime - (maxFallTime - minFallTime) * maxClimbHeight / 200;
         if (fallTime < minFallTime)
             fallTime = minFallTime;
+        GameObject.Find("FallSpeed").GetComponent<Text>().text = "추락속도: " + fallTime.ToString("N2"); 
     }
 
     //플레이어가 층 올라갈 때마다 가라앉는 시간 계산
     //최소 시간에 도달하면 계산 안하게 짜면 좋을듯
-    //재밌을거 같은데 playerMaxHeight로 고치지 말고 둬보자
+    //재밌을거 같은데 playerMaxHeight로 고치지 말고 둬보자. 안올라가고 버틸수록 용암 상승속도가 느려서 유리해짐
     private void CalcSinkTime()
     {
         float sinkDecrement = Mathf.Pow(Mathf.Log(maxClimbHeight + 1, 3), 1.5f) / 2;      //317층부터 minSinkTime이 적용됨
         sinkTime = sinkDecrement > maxSinkTime - minSinkTime ? minSinkTime : maxSinkTime - sinkDecrement;
         GameObject.Find("Lava").GetComponent<Lava>().sinkTime = sinkTime;
+        GameObject.Find("LavaSpeed").GetComponent<Text>().text = "용암속도: " + sinkTime.ToString("N2");
     }
 
     public void UpdateMaxClimbHeight()
@@ -90,6 +102,9 @@ public class EventManager : MonoBehaviour {
     {
         print("게임오버");
         Time.timeScale = 0;
+        GameObject gameoverPanel = GameObject.Find("Canvas").transform.Find("GameOver").gameObject;
+        gameoverPanel.transform.Find("ResultOutputText").GetComponent<Text>().text = maxClimbHeight.ToString();
+        gameoverPanel.SetActive(true);
         //그 다음 명령어
     }
 
@@ -101,8 +116,14 @@ public class EventManager : MonoBehaviour {
             isCreateNaturalBlock = true;
         else if (isCreateNaturalBlock == true)
         {
-            GetComponent<NaturalBlockCreator>().CreateNaturalBlock();
+            print("자연블럭 생성");
             isCreateNaturalBlock = false;
+            GameObject.Find("GameBoardPanel").GetComponent<NaturalBlockCreator>().CreateNaturalBlock();
         }
+    }
+
+    public void SetSinkStopTime()
+    {
+        sinkStopCooltime = sinkStopTime;
     }
 }

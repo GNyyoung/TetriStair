@@ -5,7 +5,7 @@ using UnityEngine;
 public class NaturalBlockCreator : MonoBehaviour {
     //최대 생성되는 블럭의 수는 25개.
     const int maxExpandCount = 3;
-    const int maxCreateCount = 25;
+    const int maxCreateCount = 15;
     int createdBlockCount = 0;
     float maxProbility = 0.8f;
     float createProbility;
@@ -21,10 +21,15 @@ public class NaturalBlockCreator : MonoBehaviour {
 
     public void CreateNaturalBlock()
     {
-        int seedPosX = Random.Range(0, BlockArrayManager.ColumnCount);
+        int seedPosX = Random.Range(-3, 3);
+        if(seedPosX < 0)
+        {
+            seedPosX += BlockArrayManager.ColumnCount;
+        }
         int seedPosY = maxExpandCount;
-        GetComponent<BlockArrayManager>().SetModuleContent(seedPosX, seedPosY, (int)BlockArrayManager.Content.Block);
+        GameObject.Find("GameBoardPanel").GetComponent<BlockArrayManager>().SetModuleContent(seedPosX, seedPosY, (int)BlockArrayManager.Content.Block);
         GameObject.Find("Main Camera").GetComponent<DisplayController>().InstantiateNewModule(seedPosX, seedPosY);
+        print("SeedBlock Position: " + seedPosX + "," + seedPosY);
         ExpendBlock(0, seedPosX, seedPosY);
     }
 
@@ -56,7 +61,8 @@ public class NaturalBlockCreator : MonoBehaviour {
                 return;
             else
             {
-                if (GetComponent<BlockArrayManager>().GetModuleContent(blockPosX + 1, blockPosY) == (int)BlockArrayManager.Content.Empty &&
+                if (blockPosX + 1 != 3 &&
+                    GetComponent<BlockArrayManager>().GetModuleContent(blockPosX + 1, blockPosY) == (int)BlockArrayManager.Content.Empty &&
                     Random.value < createProbility)
                 {
                     GetComponent<BlockArrayManager>().SetModuleContent(blockPosX + 1, blockPosY, (int)BlockArrayManager.Content.Block);
@@ -82,7 +88,9 @@ public class NaturalBlockCreator : MonoBehaviour {
                 return;
             else
             {
-                if (GetComponent<BlockArrayManager>().GetModuleContent(blockPosX - 1, blockPosY) == (int)BlockArrayManager.Content.Empty &&
+                //임시로 blockPosX - 1 != 6라고 해놓음 나중에 변수 써서 고치든가
+                if (blockPosX - 1 != 6 &&
+                    GetComponent<BlockArrayManager>().GetModuleContent(blockPosX - 1, blockPosY) == (int)BlockArrayManager.Content.Empty &&
                     Random.value < createProbility)
                 {
                     GetComponent<BlockArrayManager>().SetModuleContent(blockPosX - 1, blockPosY, (int)BlockArrayManager.Content.Block);
@@ -94,6 +102,7 @@ public class NaturalBlockCreator : MonoBehaviour {
 
             //위쪽 확인
             if(GetComponent<BlockArrayManager>().GetModuleContent(blockPosX, blockPosY - 1) == (int)BlockArrayManager.Content.Empty &&
+                Mathf.Abs(blockPosY - 1 - maxExpandCount) < 3 &&
                 Random.value < createProbility / 2)
             {
                 GetComponent<BlockArrayManager>().SetModuleContent(blockPosX, blockPosY - 1, (int)BlockArrayManager.Content.Block);
@@ -105,6 +114,7 @@ public class NaturalBlockCreator : MonoBehaviour {
 
             //아래쪽 확인
             if (GetComponent<BlockArrayManager>().GetModuleContent(blockPosX, blockPosY + 1) == (int)BlockArrayManager.Content.Empty &&
+                Mathf.Abs(blockPosY + 1 - maxExpandCount) < 3 &&
                 Random.value < createProbility / 2)
             {
                 GetComponent<BlockArrayManager>().SetModuleContent(blockPosX, blockPosY + 1, (int)BlockArrayManager.Content.Block);

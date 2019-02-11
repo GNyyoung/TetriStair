@@ -1013,7 +1013,7 @@
 			"Rotation": 0,
 			"ModuleNum": 0,
 			"Position": 0,
-			"Value": -1
+			"Value": -2
 		},
 		{
 			"BlockNum": 6,
@@ -1027,7 +1027,7 @@
 			"Rotation": 0,
 			"ModuleNum": 1,
 			"Position": 0,
-			"Value": 1
+			"Value": -1
 		},
 		{
 			"BlockNum": 6,
@@ -1041,7 +1041,7 @@
 			"Rotation": 0,
 			"ModuleNum": 2,
 			"Position": 0,
-			"Value": 2
+			"Value": 1
 		},
 		{
 			"BlockNum": 6,
@@ -1097,7 +1097,7 @@
 			"Rotation": 2,
 			"ModuleNum": 0,
 			"Position": 0,
-			"Value": -1
+			"Value": -2
 		},
 		{
 			"BlockNum": 6,
@@ -1111,7 +1111,7 @@
 			"Rotation": 2,
 			"ModuleNum": 1,
 			"Position": 0,
-			"Value": 1
+			"Value": -1
 		},
 		{
 			"BlockNum": 6,
@@ -1125,7 +1125,7 @@
 			"Rotation": 2,
 			"ModuleNum": 2,
 			"Position": 0,
-			"Value": 2
+			"Value": 1
 		},
 		{
 			"BlockNum": 6,

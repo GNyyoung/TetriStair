@@ -30,20 +30,19 @@ public class BlockArrayManager : MonoBehaviour {
 
     //한 행이 블럭으로 찼는지 확인한다.
     //true가 나올 경우 보너스 발동하는 메서드에 연결
-    public bool CheckRow(int[] rowIndex)
+    public void CheckRow(int posY)
     {
         bool isComplete = true;         //한줄이 되면 true
-        for(int i = 0; i < rowIndex.Length; i++)
+        for(int k = 0; k < ColumnCount; k++)
         {
-            for(int k = 0; k < gameArray.GetLength(1); k++)
-            {
-                if (gameArray[i, k] != 1)
-                    isComplete = false;
-            }
-            if (isComplete == true)
-                return true;
+            if (gameArray[k, posY] != (int)Content.Block)
+                isComplete = false;
         }
-        return false;
+        if (isComplete == true)
+        {
+            GameObject.Find("Main Camera").GetComponent<EventManager>().SetSinkStopTime();
+            print(5.0f + "초 간 용암 정지");
+        }
     }
 
     public int[,] GetGameArray()
@@ -81,7 +80,7 @@ public class BlockArrayManager : MonoBehaviour {
                             distance += 1;
                             break;
                         case (int)BlockArrayManager.Content.Block:
-                            if (distance < moveDistance)
+                            if (distance <= moveDistance)
                             {
                                 isCollideCharacter = false;
                                 moveDistance = distance;

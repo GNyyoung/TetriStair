@@ -17,11 +17,12 @@ public class DisplayController : MonoBehaviour {
     RectTransform gameBoardRectTransform;
     Vector3 initialGameBoardRectPosition;
     public GameObject lava;
+    bool isBackgroundMove = false;
 
     // Use this for initialization
     void Start () {
         backgroundPanelNum = GameObject.Find("Canvas").transform.Find("Background").childCount;
-        backgroundTransform = GameObject.Find("Canvas").transform.Find("Background") as RectTransform;
+        backgroundTransform = GameObject.Find("Canvas").transform.Find("Background").GetComponent<RectTransform>();
         gameBoardRectTransform = GameObject.Find("GameBoard").GetComponent<RectTransform>();
         initialGameBoardRectPosition = gameBoardRectTransform.localPosition;
     }
@@ -34,12 +35,16 @@ public class DisplayController : MonoBehaviour {
     //배경이 계속 이어지게 함
     public void BackgroundPanelMove()
     {
-        if(backgroundTransform.localPosition.y < - ResolutionHeight * backgroundCount)
+        if (isBackgroundMove == false && backgroundTransform.localPosition.y < -ResolutionHeight * backgroundCount)
         {
-            print("실행중");
-            backgroundTransform.GetChild((backgroundCount - 1) % 3).position += Vector3.up * backgroundPanelNum * ResolutionHeight;
+            isBackgroundMove = true;
+            print(backgroundTransform.localPosition.y + ", " + -ResolutionHeight * backgroundCount);
+            backgroundTransform.GetChild((backgroundCount - 1) % 3).localPosition += Vector3.up * backgroundPanelNum * ResolutionHeight;
+            print(backgroundPanelNum * ResolutionHeight);
             backgroundCount += 1;
         }
+        //else
+        //    isBackgroundMove = false;
     }
 
     //배경을 움직임

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CharacterAction : MonoBehaviour {
 
@@ -59,6 +60,7 @@ public class CharacterAction : MonoBehaviour {
                 GameObject.Find("GameBoardPanel").GetComponent<BlockArrayManager>().UpdateBoardAtClimb(posX, posY, directionHorz);
                 GameObject.Find("Main Camera").GetComponent<DisplayController>().BackgroundMove();
                 maxClimbHeight = climbHeight;
+                GameObject.Find("DebugHeight").GetComponent<Text>().text = maxClimbHeight.ToString();
                 posX += directionHorz;
                 GameObject.Find("Main Camera").GetComponent<DisplayController>().CharacterMove(directionHorz, directionVert);
                 GameObject.Find("Lava").GetComponent<Lava>().UpdateLavaHeight(-1);
@@ -73,7 +75,6 @@ public class CharacterAction : MonoBehaviour {
                 posY += directionVert;
                 GameObject.Find("Main Camera").GetComponent<DisplayController>().CharacterMove(directionHorz, directionVert);
             }
-            print(posX + ", " + posY);
             //캐릭터 오브젝트가 이동하는 애니메이션 필요
             GameObject.Find("GameBoardPanel").GetComponent<BlockArrayManager>().ShowContent();
         }
