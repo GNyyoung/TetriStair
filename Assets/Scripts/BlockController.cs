@@ -9,7 +9,7 @@ public class BlockController : MonoBehaviour {
     int currentRotation = 0;
     public static int blockStartPosX = Mathf.CeilToInt(BlockArrayManager.ColumnCount / 2);
     public static int blockStartPosY = BlockArrayManager.unusedTopRowCount;
-    float blockChangeTime = 0.5f;       //블럭이 추락한 후 교체에 걸리는 시간
+    float blockChangeTime = 0.4f;       //블럭이 추락한 후 교체에 걸리는 시간
 
     public struct Module
     {
@@ -161,7 +161,7 @@ public class BlockController : MonoBehaviour {
     //FallBlock이랑 합쳐도 될듯? 인수 하나 첨가해서 isFast 뭐 이런거
     public void FastFallBlock()
     {
-        int moveDistance = GetComponent<BlockArrayManager>().GetCollisionDistance(controlBlock);
+        int moveDistance = GetComponent<BlockArrayManager>().GetCollisionDistance(controlBlock, true);
         
         //controlBlock이 추락해서 제거되었을 때
         if(moveDistance == int.MaxValue)
@@ -233,6 +233,9 @@ public class BlockController : MonoBehaviour {
 
         GameObject.Find("Main Camera").GetComponent<DisplayController>().InstantiateNewBlock(controlBlock);
         GameObject.Find("Canvas").GetComponent<UIManager>().isAllowFall = true;
+
+        GameObject.Find("Main Camera").GetComponent<DisplayController>().ResetPreview();
+        GameObject.Find("Main Camera").GetComponent<DisplayController>().BlockPreview();
     }
 
     //블럭을 좌우로 이동시키는 메서드

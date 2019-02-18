@@ -7,7 +7,6 @@ public class CharacterAction : MonoBehaviour {
 
     private int posX, posY; //기준좌표는 캐릭터 하체부분. 캐릭터는 element 두개를 차지한다.
     private int climbHeight = 0;
-    private int maxClimbHeight = 0;
 
 	// Use this for initialization
 	void Start () {
@@ -32,17 +31,21 @@ public class CharacterAction : MonoBehaviour {
 
             if (GameObject.Find("GameBoardPanel").GetComponent<BlockArrayManager>().GetModuleContent(posX + directionHorz, posY - 1) == (int)BlockArrayManager.Content.Empty)
             {
-                if (GameObject.Find("GameBoardPanel").GetComponent<BlockArrayManager>().GetModuleContent(posX + directionHorz, posY) == (int)BlockArrayManager.Content.Block)
+                if (GameObject.Find("GameBoardPanel").GetComponent<BlockArrayManager>().GetModuleContent(posX + directionHorz, posY) == (int)BlockArrayManager.Content.Block ||
+                    GameObject.Find("GameBoardPanel").GetComponent<BlockArrayManager>().GetModuleContent(posX + directionHorz, posY) == (int)BlockArrayManager.Content.ControlBlock)
                 {
                     //1칸 높은 곳으로 올라감
                     directionVert = -1;
                     climbHeight += 1;
                 }
-                else if (GameObject.Find("GameBoardPanel").GetComponent<BlockArrayManager>().GetModuleContent(posX + directionHorz, posY + 1) == (int)BlockArrayManager.Content.Block)
+                else if (GameObject.Find("GameBoardPanel").GetComponent<BlockArrayManager>().GetModuleContent(posX + directionHorz, posY + 1) == (int)BlockArrayManager.Content.Block ||
+                    GameObject.Find("GameBoardPanel").GetComponent<BlockArrayManager>().GetModuleContent(posX + directionHorz, posY + 1) == (int)BlockArrayManager.Content.ControlBlock)
                 {
                     //같은 높이에서 이동
                 }
-                else if (GameObject.Find("GameBoardPanel").GetComponent<BlockArrayManager>().GetModuleContent(posX + directionHorz, posY + 2) == (int)BlockArrayManager.Content.Block)
+                else if (posY + 2 < BlockArrayManager.RowCount &&
+                    (GameObject.Find("GameBoardPanel").GetComponent<BlockArrayManager>().GetModuleContent(posX + directionHorz, posY + 2) == (int)BlockArrayManager.Content.Block ||
+                    GameObject.Find("GameBoardPanel").GetComponent<BlockArrayManager>().GetModuleContent(posX + directionHorz, posY + 2) == (int)BlockArrayManager.Content.ControlBlock))
                 {
                     //1칸 낮은 곳으로 내려감
                     directionVert = 1;
@@ -54,17 +57,16 @@ public class CharacterAction : MonoBehaviour {
             else
                 return;
 
-            if (climbHeight > maxClimbHeight)
+            if (climbHeight > GameObject.Find("Main Camera").GetComponent<EventManager>().GetMaxClimbHeight())
             {
                 //캐릭터가 최고높이를 갱신할 때
+                GameObject.Find("Main Camera").GetComponent<EventManager>().UpdateMaxClimbHeight();
                 GameObject.Find("GameBoardPanel").GetComponent<BlockArrayManager>().UpdateBoardAtClimb(posX, posY, directionHorz);
                 GameObject.Find("Main Camera").GetComponent<DisplayController>().BackgroundMove();
-                maxClimbHeight = climbHeight;
-                GameObject.Find("DebugHeight").GetComponent<Text>().text = maxClimbHeight.ToString();
+                GameObject.Find("DebugHeight").GetComponent<Text>().text = GameObject.Find("Main Camera").GetComponent<EventManager>().GetMaxClimbHeight().ToString();
                 posX += directionHorz;
                 GameObject.Find("Main Camera").GetComponent<DisplayController>().CharacterMove(directionHorz, directionVert);
                 GameObject.Find("Lava").GetComponent<Lava>().UpdateLavaHeight(-1);
-                GameObject.Find("Main Camera").GetComponent<EventManager>().UpdateMaxClimbHeight();
             }
             else
             {
@@ -77,6 +79,8 @@ public class CharacterAction : MonoBehaviour {
             }
             //캐릭터 오브젝트가 이동하는 애니메이션 필요
             GameObject.Find("GameBoardPanel").GetComponent<BlockArrayManager>().ShowContent();
+
+            GameObject.Find("Main Camera").GetComponent<DisplayController>().BlockPreview();
         }
     }
     
@@ -85,10 +89,5 @@ public class CharacterAction : MonoBehaviour {
     {
         this.posX = posX;
         this.posY = posY;
-    }
-
-    public int GetMaxHeight()
-    {
-        return maxClimbHeight;
     }
 }

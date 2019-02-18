@@ -10,6 +10,7 @@ public class BlockArrayManager : MonoBehaviour {
     public const int ColumnCount = 10;
     public const int RowCount = 21;
     public const int unusedTopRowCount = 7;
+    public const int unusedBotRowCount = 1;
     public const int ModuleDistance = 100;            //두 좌표 사이의 간격
     private int[,] gameArray = new int[ColumnCount, RowCount];   //맨 위 3칸은 안보이게 한다. 
 
@@ -52,7 +53,7 @@ public class BlockArrayManager : MonoBehaviour {
     
 
     //블럭이 내려가면서 다른 모듈에 닿기 위해 필요한 거리 계산
-    public int GetCollisionDistance(BlockController.Module[] controlBlock)
+    public int GetCollisionDistance(BlockController.Module[] controlBlock, bool checkCollide)
     {
         int moveDistance = int.MaxValue;
         int distance = 0;
@@ -107,7 +108,7 @@ public class BlockArrayManager : MonoBehaviour {
             }
         }
 
-        if(isCollideCharacter == true)
+        if(isCollideCharacter == true && checkCollide == true)
         {
             print("게임오버");
             Time.timeScale = 0;
@@ -164,6 +165,7 @@ public class BlockArrayManager : MonoBehaviour {
     //gameArray 내에 저장된 block들을 보여주는 테스트용 메서드
     public void ShowContent()
     {
+        return;
         while(pointList.Count > 0)
         {
             Destroy(pointList[0]);
@@ -188,6 +190,17 @@ public class BlockArrayManager : MonoBehaviour {
                     }
                     pointList.Add(point);
                 }
+            }
+        }
+    }
+
+    public void ResetGameArray()
+    {
+        for(int row = 0; row < RowCount; row++)
+        {
+            for(int col = 0; col < ColumnCount; col++)
+            {
+                gameArray[col, row] = (int)Content.Empty;
             }
         }
     }

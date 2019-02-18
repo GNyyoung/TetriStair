@@ -21,9 +21,11 @@ public class BlockRotation : MonoBehaviour {
 
     public void SetBlockRotation()
     {
-        string jsonString = File.ReadAllText(Application.dataPath + "/Resources/Blocks.json");
-        print(Application.dataPath + "/Resources/Blocks.json");
-        JsonData blockRotationData = JsonMapper.ToObject(jsonString);
+        JsonData blockRotationData = JsonMapper.ToObject(Resources.Load("Blocks").ToString());
+        //string jsonString = File.ReadAllText(Application.persistentDataPath + "/Blocks.json");
+        //string jsonString = File.ReadAllText(Application.streamingAssetsPath + "/Resources/Blocks.json");
+        //print(Application.streamingAssetsPath + "/Resources/Blocks.json");
+        //JsonData blockRotationData = JsonMapper.ToObject(jsonString);
         for (int i = 0; i < blockRotationData["Blocks"].Count; i++)
         {
             blockMove[

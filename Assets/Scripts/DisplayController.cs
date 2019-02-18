@@ -14,6 +14,7 @@ public class DisplayController : MonoBehaviour {
     public GameObject moduleObject;
     public GameObject characterObject;
     List<GameObject> controlBlockObject = new List<GameObject>();     //현재 조종중인 블럭 오브젝트
+    List<GameObject> previewBlockObject = new List<GameObject>();    //추락 시 미리보기 블럭 오브젝트
     RectTransform gameBoardRectTransform;
     Vector3 initialGameBoardRectPosition;
     public GameObject lava;
@@ -35,16 +36,13 @@ public class DisplayController : MonoBehaviour {
     //배경이 계속 이어지게 함
     public void BackgroundPanelMove()
     {
-        if (isBackgroundMove == false && backgroundTransform.localPosition.y < -ResolutionHeight * backgroundCount)
+        if (backgroundTransform.localPosition.y < -ResolutionHeight * backgroundCount)
         {
-            isBackgroundMove = true;
             print(backgroundTransform.localPosition.y + ", " + -ResolutionHeight * backgroundCount);
             backgroundTransform.GetChild((backgroundCount - 1) % 3).localPosition += Vector3.up * backgroundPanelNum * ResolutionHeight;
             print(backgroundPanelNum * ResolutionHeight);
             backgroundCount += 1;
         }
-        //else
-        //    isBackgroundMove = false;
     }
 
     //배경을 움직임
@@ -158,6 +156,45 @@ public class DisplayController : MonoBehaviour {
 
     public void UpdateLavaPosition(int lavaHeight)
     {
-        lava.GetComponent<RectTransform>().localPosition += Vector3.up * (EventManager.maxClimbHeight - lavaHeight) * BlockArrayManager.ModuleDistance;
+        lava.GetComponent<RectTransform>().localPosition += Vector3.up * (GameObject.Find("Main Camera").GetComponent<EventManager>().GetMaxClimbHeight() - lavaHeight) * BlockArrayManager.ModuleDistance;
+    }
+
+    //블럭이 떨어질 위치를 미리 보여줌
+    public void BlockPreview()
+    {
+        //미리보기 블럭 생성해서 controlBlock이 떨어질 곳과 똑같은 위치에 배치
+        // controlBlock이 실제로 떨어지면 미리보기는 제거
+        if(previewBlockObject.Count == 0)
+        {
+            for (int i = 0; i < controlBlockObject.Count; i++)
+            {
+                previewBlockObject.Add(Instantiate(moduleObject, gameBoardRectTransform));
+                previewBlockObject[i].GetComponent<Image>().color -= Color.black * 0.5f;
+            }
+        }
+        int moveDistance = GameObject.Find("GameBoardPanel").GetComponent<BlockArrayManager>().GetCollisionDistance(GameObject.Find("GameBoardPanel").GetComponent<BlockController>().controlBlock, false);
+
+        //controlBlock이 다른 블럭에 안걸쳐질때
+        if (moveDistance == int.MaxValue ||
+            moveDistance == -1)
+        {
+            return;
+        }
+
+        for(int i = 0; i < previewBlockObject.Count; i++)
+        {
+            previewBlockObject[i].GetComponent<RectTransform>().localPosition = 
+                controlBlockObject[i].GetComponent<RectTransform>().localPosition + 
+                Vector3.down * BlockArrayManager.ModuleDistance * moveDistance;
+        }
+    }
+
+    public void ResetPreview()
+    {
+        for(int i = previewBlockObject.Count - 1; i >= 0; i--)
+        {
+            Destroy(previewBlockObject[i]);
+        }
+        previewBlockObject = new List<GameObject>();
     }
 }

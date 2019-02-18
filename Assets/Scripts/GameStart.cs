@@ -5,13 +5,27 @@ using UnityEngine;
 public class GameStart : MonoBehaviour {
 
     const int floorPosY = BlockArrayManager.RowCount - 3;
+    GameObject gameBoardPanel;
 
-	// Use this for initialization
-	void Start () {
-        GameObject gameBoardPanel = GameObject.Find("GameBoardPanel");
+    // Use this for initialization
+    void Start () {
+        gameBoardPanel = GameObject.Find("GameBoardPanel");
 
         //기본 및 회전 상태에서 블럭의 위치 정보 세팅
         gameBoardPanel.GetComponent<BlockRotation>().SetBlockRotation();
+        Time.timeScale = 1;
+        InitializeGame();
+        
+    }
+	
+	// Update is called once per frame
+	void Update () {
+	}
+
+    public void InitializeGame()
+    {
+        //GameObject.Find("GameBoardPanel").GetComponent<BlockArrayManager>().ResetGameArray();
+        //GetComponent<EventManager>().ResetAllEvent();
 
         //게임 시작시 밑바닥 블럭 세팅
         BlockController.Module[] startingModules = new BlockController.Module[BlockArrayManager.ColumnCount];
@@ -35,8 +49,4 @@ public class GameStart : MonoBehaviour {
         //테트리스 블럭 생성
         gameBoardPanel.GetComponent<BlockController>().ChangeControlBlock();
     }
-	
-	// Update is called once per frame
-	void Update () {
-	}
 }

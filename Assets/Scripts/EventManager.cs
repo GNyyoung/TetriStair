@@ -7,16 +7,15 @@ using UnityEngine.UI;
 public class EventManager : MonoBehaviour {
 
     float deltaTime;
-    const float maxFallTime = 2;
-    const float minFallTime = 0.5f;
+    const float maxFallTime = 0.7f;             //블럭 추락 주기의 최초 시간 1.0초
+    const float minFallTime = 0.4f;
     float fallTime;
     float fallCooltime = 0;
     float sinkTime;
     float sinkCooltime = 0;
-    const float maxSinkTime = 5;                //용암 상승 주기의 최초 시간
-    const float minSinkTime = 2.0f;             //용암 상승 주기의 최소 시간
-    public static int maxClimbHeight = 0;       //플레이어가 올라간 최대 높이
-    int lavaHeight;
+    const float maxSinkTime = 2.5f;                //용암 상승 주기의 최초 시간 3.5초
+    const float minSinkTime = 1.1f;             //용암 상승 주기의 최소 시간 1.2초
+    public int maxClimbHeight = 0;       //플레이어가 올라간 최대 높이
     const int naturalBlockCycle = 15;           //자연블럭이 몇층 올라갈 때마다 생기는가
     bool isCreateNaturalBlock = false;
     float sinkStopCooltime = 0;       //0이 아니면 0이하로 될때까지 용암 상승을 막음
@@ -81,16 +80,22 @@ public class EventManager : MonoBehaviour {
     //재밌을거 같은데 playerMaxHeight로 고치지 말고 둬보자. 안올라가고 버틸수록 용암 상승속도가 느려서 유리해짐
     private void CalcSinkTime()
     {
-        float sinkDecrement = Mathf.Pow(Mathf.Log(maxClimbHeight + 1, 3), 1.5f) / 2;      //317층부터 minSinkTime이 적용됨
+        float sinkDecrement = Mathf.Pow(Mathf.Log(maxClimbHeight + 1, 4), 1.0f) / 5.0f;      //317층부터 minSinkTime이 적용됨
         sinkTime = sinkDecrement > maxSinkTime - minSinkTime ? minSinkTime : maxSinkTime - sinkDecrement;
         GameObject.Find("Lava").GetComponent<Lava>().sinkTime = sinkTime;
         GameObject.Find("LavaSpeed").GetComponent<Text>().text = "용암속도: " + sinkTime.ToString("N2");
     }
 
+    //등반높이를 1칸 올림
     public void UpdateMaxClimbHeight()
     {
         maxClimbHeight += 1;
         GameObject.Find("Lava").GetComponent<Lava>().SetMaxHeight(maxClimbHeight);
+    }
+
+    public int GetMaxClimbHeight()
+    {
+        return maxClimbHeight;
     }
 
     public void ResetFallColltime()
@@ -100,7 +105,6 @@ public class EventManager : MonoBehaviour {
 
     public void GameOver()
     {
-        print("게임오버");
         Time.timeScale = 0;
         GameObject gameoverPanel = GameObject.Find("Canvas").transform.Find("GameOver").gameObject;
         gameoverPanel.transform.Find("ResultOutputText").GetComponent<Text>().text = maxClimbHeight.ToString();
@@ -125,5 +129,16 @@ public class EventManager : MonoBehaviour {
     public void SetSinkStopTime()
     {
         sinkStopCooltime = sinkStopTime;
+    }
+
+    public void ResetAllEvent()
+    {
+        sinkTime = maxSinkTime;
+        fallTime = maxFallTime;
+        fallCooltime = 0;
+        sinkCooltime = 0;
+        sinkStopCooltime = 0;
+        isCreateNaturalBlock = false;
+        maxClimbHeight = 0;
     }
 }
