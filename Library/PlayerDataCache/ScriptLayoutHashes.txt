@@ -114,6 +114,7 @@ c2275a8bfbb9f9942cad75ecdfded41d UnityEngine.HoloLens.dll:UnityEngine.VR.WSA.Spa
 45f3431f0103c41611e8d4eec3d439df UnityEngine.HoloLens.dll:UnityEngine.VR.WSA.SpatialMappingRenderer
 c26f857ac79751318bbe6ff4a0c43a39 Assembly-CSharp.dll:.EventManager
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.BlockController
+05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.BalanceControl
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.MainUIManager
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.NaturalBlockCreator
 05524b8f659e7bfe5756d1335fec24ba Assembly-CSharp.dll:.CharacterAction

@@ -28,14 +28,16 @@ public class UIManager : MonoBehaviour {
     public void OnClickRotate()
     {
         GameObject.Find("GameBoardPanel").GetComponent<BlockController>().RotateBlock();
-        GameObject.Find("Main Camera").GetComponent<DisplayController>().BlockPreview();
+        if (GameObject.Find("GameBoardPanel").GetComponent<BlockController>().controlBlock != null)
+            GameObject.Find("Main Camera").GetComponent<DisplayController>().BlockPreview();
     }
 
     //블럭 좌우 이동
     public void OnClickBlockMove(int direction)
     {
         GameObject.Find("GameBoardPanel").GetComponent<BlockController>().BlockHorzMove(direction);
-        GameObject.Find("Main Camera").GetComponent<DisplayController>().BlockPreview();
+        if(GameObject.Find("GameBoardPanel").GetComponent<BlockController>().controlBlock != null)
+            GameObject.Find("Main Camera").GetComponent<DisplayController>().BlockPreview();
     }
 
     //블럭 빠른추락
@@ -73,7 +75,7 @@ public class UIManager : MonoBehaviour {
             OnClickCharacterMove(1);
     }
 
-    public void Restart()
+    public void OnClickRestart()
     {
         //GameObject gameBoard = GameObject.Find("GameBoard");
         //for(int i = gameBoard.transform.childCount - 1; i >= 0; i--)
@@ -83,5 +85,22 @@ public class UIManager : MonoBehaviour {
         //GameObject.Find("GameOver").SetActive(false);
 
         SceneManager.LoadScene("Game");
+    }
+
+    public void OnClickLoadMain()
+    {
+        SceneManager.LoadScene("Main");
+    }
+
+    public void OnClickResume()
+    {
+        GameObject.Find("PausePanel").SetActive(false);
+        Time.timeScale = 1;
+    }
+
+    public void OnclickPause()
+    {
+        GameObject.Find("Canvas").transform.Find("PausePanel").gameObject.SetActive(true);
+        Time.timeScale = 0;
     }
 }

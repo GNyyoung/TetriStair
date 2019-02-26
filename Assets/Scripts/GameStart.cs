@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameStart : MonoBehaviour {
 
-    const int floorPosY = BlockArrayManager.RowCount - 3;
+    const int floorPosY = BlockArrayManager.RowCount - 3 - BlockArrayManager.unusedBotRowCount;
     GameObject gameBoardPanel;
 
     // Use this for initialization

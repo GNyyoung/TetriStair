@@ -80,7 +80,8 @@ public class CharacterAction : MonoBehaviour {
             //캐릭터 오브젝트가 이동하는 애니메이션 필요
             GameObject.Find("GameBoardPanel").GetComponent<BlockArrayManager>().ShowContent();
 
-            GameObject.Find("Main Camera").GetComponent<DisplayController>().BlockPreview();
+            if(GameObject.Find("GameBoardPanel").GetComponent<BlockController>().controlBlock != null)
+                GameObject.Find("Main Camera").GetComponent<DisplayController>().BlockPreview();
         }
     }
     

@@ -60,11 +60,13 @@ public class DisplayController : MonoBehaviour {
         GameObject[] allModuleObjects = GameObject.FindGameObjectsWithTag("Module");
         for(int i = allModuleObjects.Length - 1; i >= 0; i--)
         {
-            if(Mathf.Abs(allModuleObjects[i].GetComponent<RectTransform>().localPosition.y + gameBoardRectTransform.localPosition.y - initialGameBoardRectPosition.y) > GameObject.Find("GameBoardPanel").GetComponent<RectTransform>().sizeDelta.y)
+            if(Mathf.Abs(allModuleObjects[i].GetComponent<RectTransform>().localPosition.y + gameBoardRectTransform.localPosition.y - initialGameBoardRectPosition.y) > 
+                GameObject.Find("GameBoardPanel").GetComponent<RectTransform>().sizeDelta.y + BlockArrayManager.ModuleDistance)
             {
                 Destroy(allModuleObjects[i]);
             }
         }
+        CheckBlindBlock();
     }
 
     //블럭 떨어지고 나서 새로운 블럭 생성할 때 실행
@@ -115,6 +117,7 @@ public class DisplayController : MonoBehaviour {
                 Vector3.right * BlockArrayManager.ModuleDistance * horzDistance + 
                 Vector3.down * BlockArrayManager.ModuleDistance * vertDistance;
         }
+        CheckBlindBlock();
     }
 
     //캐릭터 움직임 관련
@@ -130,7 +133,7 @@ public class DisplayController : MonoBehaviour {
     {
         if(controlBlockObject.Count == fixedModule.Length)
         {
-            for(int i = 1; i < controlBlockObject.Count; i++)
+            for(int i = 0; i < controlBlockObject.Count; i++)
             {
                 controlBlockObject[i].GetComponent<RectTransform>().localPosition =
                     new Vector3(
@@ -178,6 +181,7 @@ public class DisplayController : MonoBehaviour {
         if (moveDistance == int.MaxValue ||
             moveDistance == -1)
         {
+            ResetPreview();
             return;
         }
 
@@ -187,6 +191,7 @@ public class DisplayController : MonoBehaviour {
                 controlBlockObject[i].GetComponent<RectTransform>().localPosition + 
                 Vector3.down * BlockArrayManager.ModuleDistance * moveDistance;
         }
+        CheckBlindBlock();
     }
 
     public void ResetPreview()
@@ -196,5 +201,18 @@ public class DisplayController : MonoBehaviour {
             Destroy(previewBlockObject[i]);
         }
         previewBlockObject = new List<GameObject>();
+    }
+
+    public void CheckBlindBlock()
+    {
+        GameObject[] allModuleObjects = GameObject.FindGameObjectsWithTag("Module");
+        for(int i = 0; i < allModuleObjects.Length; i++)
+        {
+            if (Mathf.Abs(allModuleObjects[i].GetComponent<RectTransform>().localPosition.y + gameBoardRectTransform.localPosition.y - initialGameBoardRectPosition.y) >
+                GameObject.Find("GameBoardPanel").GetComponent<RectTransform>().sizeDelta.y)
+            {
+                allModuleObjects[i].GetComponent<Image>().color -= new Color(0, 0, 0, allModuleObjects[i].GetComponent<Image>().color.a);
+            }
+        }
     }
 }

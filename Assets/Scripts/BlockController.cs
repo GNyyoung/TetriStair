@@ -38,29 +38,33 @@ public class BlockController : MonoBehaviour {
 
             for (int i = 1; i < controlBlock.Length; i++)
             {
-                if (GetComponent<BlockArrayManager>().GetModuleContent(
+                if(controlBlock[i].posX + BlockRotation.blockMove[controlBlockType, rotation, i - 1, 0] >= 0 && controlBlock[i].posX + BlockRotation.blockMove[controlBlockType, rotation, i - 1, 0] < BlockArrayManager.ColumnCount)
+                {
+                    if (GetComponent<BlockArrayManager>().GetModuleContent(
                     controlBlock[i].posX + BlockRotation.blockMove[controlBlockType, rotation, i - 1, 0],
                     controlBlock[i].posY + BlockRotation.blockMove[controlBlockType, rotation, i - 1, 1]) == (int)BlockArrayManager.Content.Block)
-                {
-                    //print("다른 블럭에 걸림");
-                    return;
+                    {
+                        //print("다른 블럭에 걸림");
+                        return;
+                    }
+                    else if (GetComponent<BlockArrayManager>().GetModuleContent(
+                        controlBlock[i].posX + BlockRotation.blockMove[controlBlockType, rotation, i - 1, 0],
+                        controlBlock[i].posY + BlockRotation.blockMove[controlBlockType, rotation, i - 1, 1]) == (int)BlockArrayManager.Content.Character)
+                    {
+                        //print("캐릭터에 걸림");
+                        return;
+                    }
                 }
-                else if (GetComponent<BlockArrayManager>().GetModuleContent(
-                    controlBlock[i].posX + BlockRotation.blockMove[controlBlockType, rotation, i - 1, 0],
-                    controlBlock[i].posY + BlockRotation.blockMove[controlBlockType, rotation, i - 1, 1]) == (int)BlockArrayManager.Content.Character)
-                {
-                    //print("캐릭터에 걸림");
-                    return;
-                }
-
+                
                 //블럭이 얼마나 밖으로 삐져나갔는지 체크
-                if (controlBlock[i].posX > BlockArrayManager.RowCount && controlBlock[i].posX - BlockArrayManager.RowCount > outOfBorderX)
+                if (controlBlock[i].posX + BlockRotation.blockMove[controlBlockType, rotation, i - 1, 0] > BlockArrayManager.RowCount && controlBlock[i].posX + BlockRotation.blockMove[controlBlockType, rotation, i - 1, 0] - BlockArrayManager.RowCount > outOfBorderX)
                 {
-                    outOfBorderX = controlBlock[i].posX - BlockArrayManager.RowCount;
+                    outOfBorderX = controlBlock[i].posX + BlockRotation.blockMove[controlBlockType, rotation, i - 1, 0] - BlockArrayManager.RowCount + 1;
                 }
-                else if (controlBlock[i].posX < 0 && -controlBlock[i].posX < outOfBorderX)
+                else if (controlBlock[i].posX + BlockRotation.blockMove[controlBlockType, rotation, i - 1, 0] < 0 && controlBlock[i].posX + BlockRotation.blockMove[controlBlockType, rotation, i - 1, 0] < outOfBorderX)
                 {
-                    outOfBorderX = -controlBlock[i].posX;
+                    outOfBorderX = controlBlock[i].posX + BlockRotation.blockMove[controlBlockType, rotation, i - 1, 0];
+                    print("왼쪽 밀려남" + outOfBorderX);
                 }
             }
 
@@ -76,21 +80,23 @@ public class BlockController : MonoBehaviour {
 
             for (int i = 0; i < controlBlock.Length; i++)
             {
+                print(i + "번째 모듈");
                 if (i == 0)
                 {
+                    print("PreviousPositionX : " + (controlBlock[i].posX));
+                    GetComponent<BlockArrayManager>().SetModuleContent(controlBlock[i].posX, controlBlock[i].posY, (int)BlockArrayManager.Content.Empty);
                     controlBlock[i].posX -= outOfBorderX;
-                    print(controlBlock[i].posX + ", " + controlBlock[i].posY);
-                    print(GetComponent<BlockArrayManager>().GetModuleContent(controlBlock[i].posX, controlBlock[i].posY));
+                    GetComponent<BlockArrayManager>().SetModuleContent(controlBlock[i].posX, controlBlock[i].posY, (int)BlockArrayManager.Content.ControlBlock);
                 }
                 else
                 {
+                    print("PreviousPositionX : " + controlBlock[i].posX);
                     GetComponent<BlockArrayManager>().SetModuleContent(controlBlock[i].posX, controlBlock[i].posY, (int)BlockArrayManager.Content.Empty);
-                    controlBlock[i].posX = controlBlock[0].posX + BlockRotation.blockMove[controlBlockType, rotation, i - 1, 0] - outOfBorderX;
+                    controlBlock[i].posX = controlBlock[0].posX + BlockRotation.blockMove[controlBlockType, rotation, i - 1, 0];
                     controlBlock[i].posY = controlBlock[0].posY + BlockRotation.blockMove[controlBlockType, rotation, i - 1, 1];
                     GetComponent<BlockArrayManager>().SetModuleContent(controlBlock[i].posX, controlBlock[i].posY, (int)BlockArrayManager.Content.ControlBlock);
-                    print(controlBlock[i].posX + ", " + controlBlock[i].posY);
-                    print(GetComponent<BlockArrayManager>().GetModuleContent(controlBlock[i].posX, controlBlock[i].posY));
                 }
+                print("ChangedPositionX : " + controlBlock[i].posX);
             }
             currentRotation = rotation;
 

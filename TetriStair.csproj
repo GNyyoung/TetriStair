@@ -85,6 +85,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Scripts\BalanceControl.cs" />
     <Compile Include="Assets\Scripts\BlockArrayManager.cs" />
     <Compile Include="Assets\Scripts\BlockController.cs" />
     <Compile Include="Assets\Scripts\BlockRotation.cs" />

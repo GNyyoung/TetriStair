@@ -8,7 +8,7 @@ public class BlockArrayManager : MonoBehaviour {
     public enum Content { Empty, Block, Character, ControlBlock}
 
     public const int ColumnCount = 10;
-    public const int RowCount = 21;
+    public const int RowCount = 22;
     public const int unusedTopRowCount = 7;
     public const int unusedBotRowCount = 1;
     public const int ModuleDistance = 100;            //두 좌표 사이의 간격
