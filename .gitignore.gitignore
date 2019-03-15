@@ -10,6 +10,8 @@
 [Ll]ogs/
 [Aa]ssets/AssetStoreTools*
 
+Library/
+
 # Visual Studio cache directory
 .vs/
 
