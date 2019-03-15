@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
+# Visual Studio 2017
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TetriStair.Plugins", "TetriStair.Plugins.csproj", "{4BC516D6-997C-CE6D-441F-008C6FC9267B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TetriStair", "TetriStair.csproj", "{CF6AD907-AF96-1D6C-8A59-7CE10E84FCC3}"

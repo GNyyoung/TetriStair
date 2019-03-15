@@ -23,13 +23,16 @@ public class EventManager : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		if(GameObject.Find("DontDestroyOnLoad").GetComponent<BalanceControl>().GetFallTime() != 0)
+        if (GameObject.Find("DontDestroyOnLoad") != null)
         {
-            maxFallTime = GameObject.Find("DontDestroyOnLoad").GetComponent<BalanceControl>().GetFallTime();
-        }
-        if (GameObject.Find("DontDestroyOnLoad").GetComponent<BalanceControl>().GetSinkTime() != 0)
-        {
-            maxSinkTime = GameObject.Find("DontDestroyOnLoad").GetComponent<BalanceControl>().GetSinkTime();
+            if (GameObject.Find("DontDestroyOnLoad").GetComponent<BalanceControl>().GetFallTime() != 0)
+            {
+                maxFallTime = GameObject.Find("DontDestroyOnLoad").GetComponent<BalanceControl>().GetFallTime();
+            }
+            if (GameObject.Find("DontDestroyOnLoad").GetComponent<BalanceControl>().GetSinkTime() != 0)
+            {
+                maxSinkTime = GameObject.Find("DontDestroyOnLoad").GetComponent<BalanceControl>().GetSinkTime();
+            }
         }
     }
 	
