@@ -1,4 +1,4 @@
-# Created by https://www.gitignore.io/api/unity
+﻿# Created by https://www.gitignore.io/api/unity
 # Edit at https://www.gitignore.io/?templates=unity
 
 ### Unity ###
@@ -9,8 +9,6 @@
 [Bb]uilds/
 [Ll]ogs/
 [Aa]ssets/AssetStoreTools*
-
-Library/
 
 # Visual Studio cache directory
 .vs/
@@ -38,6 +36,7 @@ ExportedObj/
 # Unity3D generated meta files
 *.pidb.meta
 *.pdb.meta
+*.mdb.meta
 
 # Unity3D generated file on crash reports
 sysinfo.txt

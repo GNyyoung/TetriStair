@@ -242,6 +242,8 @@ public class BlockController : MonoBehaviour {
 
         GameObject.Find("Main Camera").GetComponent<DisplayController>().ResetPreview();
         GameObject.Find("Main Camera").GetComponent<DisplayController>().BlockPreview();
+
+        DeleteBottomRow();
     }
 
     //블럭을 좌우로 이동시키는 메서드
@@ -296,6 +298,15 @@ public class BlockController : MonoBehaviour {
             {
                 controlBlock[i].posY += 1;
             }
+        }
+    }
+
+    //화면 밑 가장 아래 행을 제거하는 데 사용함.
+    public void DeleteBottomRow()
+    {
+        for(int i = 0; i < BlockArrayManager.ColumnCount; i++)
+        {
+            GameObject.Find("GameBoardPanel").GetComponent<BlockArrayManager>().SetModuleContent(i, BlockArrayManager.RowCount - 1, (int)BlockArrayManager.Content.Empty);
         }
     }
 }
