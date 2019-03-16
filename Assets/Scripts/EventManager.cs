@@ -13,23 +13,28 @@ public class EventManager : MonoBehaviour {
     float fallCooltime = 0;
     float sinkTime;
     float sinkCooltime = 0;
-    float maxSinkTime = 2.5f;                //용암 상승 주기의 최초 시간 3.5초
-    float minSinkTime = 1.1f;             //용암 상승 주기의 최소 시간 1.2초
-    public int maxClimbHeight = 0;       //플레이어가 올라간 최대 높이
+    float maxSinkTime = 6.0f;                //용암 상승 주기의 최초 시간
+    float minSinkTime = 1.0f;             //용암 상승 주기의 최소 시간
+    public int maxClimbHeight = 0;       //플레이어가 실제로 올라간 횟수
+    public float heightScore = 0;        //플레이어가 받은 점수
+    public int bonusClimbHeight = 0;     //용암과의 격차에 따른 보너스를 합산한 높이
     const int naturalBlockCycle = 15;           //자연블럭이 몇층 올라갈 때마다 생기는가
     bool isCreateNaturalBlock = false;
     float sinkStopCooltime = 0;       //0이 아니면 0이하로 될때까지 용암 상승을 막음
-    float sinkStopTime = 7.0f;
+    float sinkStopTime = 5.0f;          //블럭 1줄 완성 시 용암이 정지하는 시간.
 
 	// Use this for initialization
 	void Start () {
-		if(GameObject.Find("DontDestroyOnLoad").GetComponent<BalanceControl>().GetFallTime() != 0)
+        if(GameObject.Find("DontDestroyOnLoad") != null)
         {
-            maxFallTime = GameObject.Find("DontDestroyOnLoad").GetComponent<BalanceControl>().GetFallTime();
-        }
-        if (GameObject.Find("DontDestroyOnLoad").GetComponent<BalanceControl>().GetSinkTime() != 0)
-        {
-            maxSinkTime = GameObject.Find("DontDestroyOnLoad").GetComponent<BalanceControl>().GetSinkTime();
+            if (GameObject.Find("DontDestroyOnLoad").GetComponent<BalanceControl>().GetFallTime() != 0)
+            {
+                maxFallTime = GameObject.Find("DontDestroyOnLoad").GetComponent<BalanceControl>().GetFallTime();
+            }
+            if (GameObject.Find("DontDestroyOnLoad").GetComponent<BalanceControl>().GetSinkTime() != 0)
+            {
+                maxSinkTime = GameObject.Find("DontDestroyOnLoad").GetComponent<BalanceControl>().GetSinkTime();
+            }
         }
     }
 	
@@ -88,17 +93,33 @@ public class EventManager : MonoBehaviour {
     //재밌을거 같은데 playerMaxHeight로 고치지 말고 둬보자. 안올라가고 버틸수록 용암 상승속도가 느려서 유리해짐
     private void CalcSinkTime()
     {
-        float sinkDecrement = Mathf.Pow(Mathf.Log(maxClimbHeight + 1, 5), 1.3f) / 4.5f;      //317층부터 minSinkTime이 적용됨
-        sinkTime = sinkDecrement > maxSinkTime - minSinkTime ? minSinkTime : maxSinkTime - sinkDecrement;
+        //float sinkDecrement = Mathf.Pow(Mathf.Log(maxClimbHeight + 1, 5), 1.3f) / 4.5f;      //이전 공식.
+        //sinkTime = sinkDecrement > maxSinkTime - minSinkTime ? minSinkTime : maxSinkTime - sinkDecrement;
+        sinkTime = maxSinkTime * Mathf.Pow(0.99f, bonusClimbHeight + 1);
+        if (sinkTime < minSinkTime)
+            sinkTime = minSinkTime;
         GameObject.Find("Lava").GetComponent<Lava>().sinkTime = sinkTime;
         GameObject.Find("LavaSpeed").GetComponent<Text>().text = "용암속도: " + sinkTime.ToString("N2");
     }
 
-    //등반높이를 1칸 올림
-    public void UpdateMaxClimbHeight()
+    //높이 관련 변수 3개의 값을 증가시킨다.
+    public void UpdateClimbHeight()
     {
+        float gap = GameObject.Find("Lava").GetComponent<Lava>().GetGapLavaToPlayer();
+        int bonusHeight = Mathf.Abs(Mathf.FloorToInt(gap / 5)) - 1;
+        float scoreMutipleRatio = 1.2f;
+
+        if (bonusHeight < 1)
+            bonusHeight = 1;
+        else if (bonusHeight > 10)
+            bonusHeight = 10;
+
         maxClimbHeight += 1;
+        bonusClimbHeight += bonusHeight;
+        heightScore += Mathf.Pow(scoreMutipleRatio, bonusHeight - 1);
+
         GameObject.Find("Lava").GetComponent<Lava>().SetMaxHeight(maxClimbHeight);
+        GameObject.Find("GameScore").GetComponent<Text>().text = heightScore.ToString();
     }
 
     public int GetMaxClimbHeight()

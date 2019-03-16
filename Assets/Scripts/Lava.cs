@@ -10,6 +10,7 @@ public class Lava : MonoBehaviour {
     public float sinkTime;
     public int maxHeight;
     float startPosY;
+    float gapLavaToPlayer;
 
 	// Use this for initialization
 	void Start () {
@@ -18,7 +19,8 @@ public class Lava : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        GameObject.Find("LavaPosition").GetComponent<Text>().text = ((this.gameObject.GetComponent<RectTransform>().localPosition.y + 380) / 100).ToString();
+        gapLavaToPlayer = (this.gameObject.GetComponent<RectTransform>().localPosition.y + 380) / 100;
+        GameObject.Find("LavaPosition").GetComponent<Text>().text = gapLavaToPlayer.ToString();
         CheckFallLava();
         startPosY = this.GetComponent<RectTransform>().localPosition.y;
     }
@@ -48,5 +50,10 @@ public class Lava : MonoBehaviour {
     public void SetMaxHeight(int height)
     {
         maxHeight = height;
+    }
+
+    public float GetGapLavaToPlayer()
+    {
+        return gapLavaToPlayer;
     }
 }

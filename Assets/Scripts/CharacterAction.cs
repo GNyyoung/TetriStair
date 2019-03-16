@@ -60,7 +60,7 @@ public class CharacterAction : MonoBehaviour {
             if (climbHeight > GameObject.Find("Main Camera").GetComponent<EventManager>().GetMaxClimbHeight())
             {
                 //캐릭터가 최고높이를 갱신할 때
-                GameObject.Find("Main Camera").GetComponent<EventManager>().UpdateMaxClimbHeight();
+                GameObject.Find("Main Camera").GetComponent<EventManager>().UpdateClimbHeight();
                 GameObject.Find("GameBoardPanel").GetComponent<BlockArrayManager>().UpdateBoardAtClimb(posX, posY, directionHorz);
                 GameObject.Find("Main Camera").GetComponent<DisplayController>().BackgroundMove();
                 GameObject.Find("DebugHeight").GetComponent<Text>().text = GameObject.Find("Main Camera").GetComponent<EventManager>().GetMaxClimbHeight().ToString();
