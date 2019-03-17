@@ -92,6 +92,7 @@
     <Compile Include="Assets\Scripts\DisplayController.cs" />
     <Compile Include="Assets\Scripts\EventManager.cs" />
     <Compile Include="Assets\Scripts\GameStart.cs" />
+    <Compile Include="Assets\Scripts\Joystick.cs" />
     <Compile Include="Assets\Scripts\Lava.cs" />
     <Compile Include="Assets\Scripts\MainUIManager.cs" />
     <Compile Include="Assets\Scripts\NaturalBlockCreator.cs" />
