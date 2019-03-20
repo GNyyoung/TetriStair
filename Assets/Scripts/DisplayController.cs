@@ -70,7 +70,7 @@ public class DisplayController : MonoBehaviour {
     }
 
     //블럭 떨어지고 나서 새로운 블럭 생성할 때 실행
-    public void InstantiateNewBlock(BlockController.Module[] module)
+    public void InstantiateNewBlock(BlockController.Module[] module, int blockType)
     {
         controlBlockObject = new List<GameObject>();
         for (int i = 0; i < module.Length; i++)
@@ -80,6 +80,7 @@ public class DisplayController : MonoBehaviour {
                 new Vector3(
                     module[i].posX + 0.5f,
                     -(module[i].posY + 0.5f - BlockArrayManager.unusedTopRowCount)) * BlockArrayManager.ModuleDistance + Vector3.down * (gameBoardRectTransform.localPosition.y - initialGameBoardRectPosition.y);
+            controlBlockObject[i].GetComponent<Image>().sprite = Resources.Load<Sprite>("Sprites/Block_" + blockType.ToString());
         }
 
         GameObject.Find("GameBoardPanel").GetComponent<BlockArrayManager>().ShowContent();

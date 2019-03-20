@@ -237,7 +237,7 @@ public class BlockController : MonoBehaviour {
             GetComponent<BlockArrayManager>().SetModuleContent(controlBlock[i].posX, controlBlock[i].posY, (int)BlockArrayManager.Content.ControlBlock);
         }
 
-        GameObject.Find("Main Camera").GetComponent<DisplayController>().InstantiateNewBlock(controlBlock);
+        GameObject.Find("Main Camera").GetComponent<DisplayController>().InstantiateNewBlock(controlBlock, controlBlockType);
         GameObject.Find("Canvas").GetComponent<UIManager>().isAllowFall = true;
 
         GameObject.Find("Main Camera").GetComponent<DisplayController>().ResetPreview();

@@ -41,7 +41,7 @@ public class GameStart : MonoBehaviour {
         gameBoardPanel.GetComponent<BlockArrayManager>().SetModuleContent(Mathf.CeilToInt(BlockArrayManager.ColumnCount / 2), floorPosY - 2, (int)BlockArrayManager.Content.Character);
 
         //블럭 오브젝트 생성
-        GameObject.Find("Main Camera").GetComponent<DisplayController>().InstantiateNewBlock(startingModules);
+        GameObject.Find("Main Camera").GetComponent<DisplayController>().InstantiateNewBlock(startingModules, 0);
         //캐릭터 오브젝트 생성
         GameObject.Find("Main Camera").GetComponent<DisplayController>().InstantiateCharacter(Mathf.CeilToInt(BlockArrayManager.ColumnCount / 2), floorPosY - 1);
         GameObject.FindGameObjectWithTag("Player").GetComponent<CharacterAction>().InitializeCharacterPosition(Mathf.CeilToInt(BlockArrayManager.ColumnCount / 2), floorPosY - 1);
