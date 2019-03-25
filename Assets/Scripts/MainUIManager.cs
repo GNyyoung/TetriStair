@@ -36,4 +36,9 @@ public class MainUIManager : MonoBehaviour {
     {
         sinkText.text = GameObject.Find("SinkSlider").GetComponent<Slider>().value.ToString("N2");
     }
+
+    public void OnClickSelectController(int type)
+    {
+        GameObject.Find("DontDestroyOnLoad").GetComponent<BalanceControl>().SetControllerType(type);
+    }
 }

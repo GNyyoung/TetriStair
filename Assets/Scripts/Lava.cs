@@ -42,8 +42,6 @@ public class Lava : MonoBehaviour {
         {
             GameObject.Find("Main Camera").GetComponent<EventManager>().GameOver();
         }
-        GameObject.Find("PlayerH").GetComponent<Text>().text = (GameObject.FindGameObjectWithTag("Player").GetComponent<RectTransform>().localPosition.y - GameObject.Find("Canvas").GetComponent<RectTransform>().sizeDelta.y / 2 + GameObject.Find("GameBoardPanel").GetComponent<RectTransform>().sizeDelta.y / 2 + GameObject.Find("GameBoardPanel").GetComponent<RectTransform>().localPosition.y - GameObject.FindGameObjectWithTag("Player").GetComponent<RectTransform>().sizeDelta.y / 2).ToString("N2");
-        GameObject.Find("LavaH").GetComponent<Text>().text = (this.GetComponent<RectTransform>().localPosition.y + this.GetComponent<RectTransform>().sizeDelta.y / 2 - GameObject.Find("Canvas").GetComponent<RectTransform>().sizeDelta.y / 2 + GameObject.Find("Main Camera").GetComponent<EventManager>().GetMaxClimbHeight() * 100).ToString("N2");
     }
 
     //테스트용 메서드. 나중에 삭제

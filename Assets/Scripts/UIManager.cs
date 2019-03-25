@@ -7,10 +7,37 @@ public class UIManager : MonoBehaviour {
 
     GameObject character;
     public bool isAllowFall = true;
+    int controllerType;
 
 	// Use this for initialization
 	void Start () {
-		
+        if (GameObject.Find("JoystickBackground") != null)
+            GameObject.Find("JoystickBackground").SetActive(false);
+        if (GameObject.Find("CMoveButton") != null)
+            GameObject.Find("CMoveButton").SetActive(false);
+        if (GameObject.Find("CMoveTouch") != null)
+            GameObject.Find("CMoveTouch").SetActive(false);
+
+        controllerType = GameObject.Find("DontDestroyOnLoad").GetComponent<BalanceControl>().GetControllerType();
+        switch (controllerType)
+        {
+            case 0:
+                //조이스틱
+                GameObject.Find("Canvas").transform.Find("JoystickBackground").gameObject.SetActive(true);
+                break;
+            case 1:
+                //이동버튼
+                GameObject.Find("Canvas").transform.Find("CMove_Button").gameObject.SetActive(true);
+                break;
+            case 2:
+                //화면터치
+                GameObject.Find("Canvas").transform.Find("CMove_Touch").gameObject.SetActive(true);
+                break;
+            default:
+                Debug.LogError("잘못된 컨트롤러 타입");
+                return;
+
+        }
 	}
 	
 	// Update is called once per frame

@@ -7,6 +7,7 @@ public class BalanceControl : MonoBehaviour {
 
     float fallTime;
     float sinkTime;
+    int controllerType;
 
 	// Use this for initialization
 	void Start () {
@@ -34,6 +35,14 @@ public class BalanceControl : MonoBehaviour {
     public float GetSinkTime()
     {
         return sinkTime;
+    }
+    public void SetControllerType(int type)
+    {
+        controllerType = type;
+    }
+    public int GetControllerType()
+    {
+        return controllerType;
     }
     
 }
