@@ -41,4 +41,9 @@ public class MainUIManager : MonoBehaviour {
     {
         GameObject.Find("DontDestroyOnLoad").GetComponent<BalanceControl>().SetControllerType(type);
     }
+
+    public void SetContollerText(string controllerName)
+    {
+        GameObject.Find("UsingControllerText").GetComponent<Text>().text = controllerName;
+    }
 }

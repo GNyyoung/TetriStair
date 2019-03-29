@@ -8,11 +8,13 @@ public class BalanceControl : MonoBehaviour {
     float fallTime;
     float sinkTime;
     int controllerType;
+    float resolutionWidthRate = 9;
+    float resolutionHeightRate = 16;
 
 	// Use this for initialization
 	void Start () {
         DontDestroyOnLoad(this);
-
+        Screen.SetResolution(Screen.width, (int)(Screen.width * resolutionHeightRate / resolutionWidthRate), true);
     }
 	
 	// Update is called once per frame

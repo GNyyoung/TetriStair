@@ -14,7 +14,7 @@ public class EventManager : MonoBehaviour {
     float sinkTime;
     float sinkCooltime = 0;
     float maxSinkTime = 6.0f;                //용암 상승 주기의 최초 시간
-    float minSinkTime = 1.0f;             //용암 상승 주기의 최소 시간
+    float minSinkTime = 1.5f;             //용암 상승 주기의 최소 시간
     public int maxClimbHeight = 0;       //플레이어가 실제로 올라간 횟수
     public float heightScore = 0;        //플레이어가 받은 점수
     public int bonusClimbHeight = 0;     //용암과의 격차에 따른 보너스를 합산한 높이

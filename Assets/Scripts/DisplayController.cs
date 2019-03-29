@@ -75,7 +75,8 @@ public class DisplayController : MonoBehaviour {
         controlBlockObject = new List<GameObject>();
         for (int i = 0; i < module.Length; i++)
         {
-            controlBlockObject.Add(Instantiate(moduleObject, gameBoardRectTransform));
+            //controlBlockObject.Add(Instantiate(moduleObject, gameBoardRectTransform));
+            controlBlockObject.Add(Instantiate(moduleObject, gameBoardRectTransform.Find("Block")));
             controlBlockObject[i].GetComponent<RectTransform>().localPosition = 
                 new Vector3(
                     module[i].posX + 0.5f,
@@ -172,7 +173,8 @@ public class DisplayController : MonoBehaviour {
         {
             for (int i = 0; i < controlBlockObject.Count; i++)
             {
-                previewBlockObject.Add(Instantiate(moduleObject, gameBoardRectTransform));
+                //previewBlockObject.Add(Instantiate(moduleObject, gameBoardRectTransform));
+                previewBlockObject.Add(Instantiate(moduleObject, gameBoardRectTransform.Find("FakeBlock")));
                 previewBlockObject[i].GetComponent<Image>().color -= Color.black * 0.5f;
             }
         }

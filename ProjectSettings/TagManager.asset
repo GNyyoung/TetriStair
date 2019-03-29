@@ -14,8 +14,8 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
+  - Block
+  - FakeBlock
   - 
   - 
   - 
@@ -39,6 +39,12 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: FakeBlock
+    uniqueID: 1060978465
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Block
+    uniqueID: 2913341061
     locked: 0

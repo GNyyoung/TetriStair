@@ -9,6 +9,10 @@ public class UIManager : MonoBehaviour {
     public bool isAllowFall = true;
     int controllerType;
 
+    bool isFall = false;
+    float cooltime = 0;
+    float durationTime = 0;
+
 	// Use this for initialization
 	void Start () {
         if (GameObject.Find("JoystickBackground") != null)
@@ -43,6 +47,22 @@ public class UIManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         KeyBoardControl();
+
+        if(isFall == true)
+        {
+            if (durationTime >= 0.2f && cooltime >= 1.3f)
+            {
+                GameObject.Find("GameBoardPanel").GetComponent<BlockController>().FallBlock();
+                cooltime = 0;
+            }
+            cooltime += Time.deltaTime;
+            durationTime += Time.deltaTime;
+        }
+
+        if (Input.GetKeyUp(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
 	}
 
     //캐릭터 좌우 이동
@@ -68,17 +88,42 @@ public class UIManager : MonoBehaviour {
     }
 
     //블럭 빠른추락
-    public void OnClickBlockFall()
+    /*public void OnClickBlockFall()
     {
-        //블럭이 한번에 떨어지는 코드
-        if(isAllowFall == true)
+        if(durationTime < 0.5f)
         {
-            isAllowFall = false;
-            GameObject.Find("GameBoardPanel").GetComponent<BlockController>().FastFallBlock();
+            if (isAllowFall == true)
+            {
+                isAllowFall = false;
+                GameObject.Find("GameBoardPanel").GetComponent<BlockController>().FastFallBlock();
+            }
         }
+        durationTime = 0;
+    }*/
 
-        //블럭이 한칸씩 빠르게 떨어지는 코드
-        //어떻게 짜냐? 그냥 바꾸지 말까?
+    //낙하 버튼을 오래 누르고 있으면 1칸씩 빠르게 내려감.
+    public void OnButtonDownBlockFall()
+    {
+        isFall = true;
+    }
+
+    public void OnButtonUpBlockFall()
+    {
+        isFall = false;
+        if (durationTime < 0.2f)
+        {
+            if (isAllowFall == true)
+            {
+                isAllowFall = false;
+                GameObject.Find("GameBoardPanel").GetComponent<BlockController>().FastFallBlock();
+            }
+        }
+        durationTime = 0;
+    }
+
+    public void Test()
+    {
+        print("드래그?");
     }
     
     public void SetCharacter(GameObject character)
@@ -90,8 +135,8 @@ public class UIManager : MonoBehaviour {
     {
         if (Input.GetKeyDown(KeyCode.UpArrow))
             OnClickRotate();
-        else if (Input.GetKeyDown(KeyCode.DownArrow))
-            OnClickBlockFall();
+        else if (Input.GetKeyDown(KeyCode.DownArrow));
+            //OnClickBlockFall();
         else if (Input.GetKeyDown(KeyCode.LeftArrow))
             OnClickBlockMove(-1);
         else if (Input.GetKeyDown(KeyCode.RightArrow))
@@ -129,5 +174,10 @@ public class UIManager : MonoBehaviour {
     {
         GameObject.Find("Canvas").transform.Find("PausePanel").gameObject.SetActive(true);
         Time.timeScale = 0;
+    }
+
+    public void OnClickExit()
+    {
+        Application.Quit();
     }
 }
