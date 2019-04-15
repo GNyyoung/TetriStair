@@ -14,9 +14,9 @@ public class BlockRotation : MonoBehaviour {
     const int position = 2;
     public static int[,,,] blockMove = new int[blockCount, rotation, moduleCount, position];
 
-    private void Start()
+    private void Awake()
     {
-        
+        SetBlockRotation();
     }
 
     public void SetBlockRotation()

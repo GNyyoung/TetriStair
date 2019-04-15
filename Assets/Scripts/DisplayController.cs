@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class DisplayController : MonoBehaviour {
 
     public GameObject background;
-    const int ResolutionHeight = 1920;
+    public const int ResolutionHeight = 1920;
     public Camera mainCamera;
     private int backgroundPanelNum;
     private int backgroundCount = 1;
@@ -20,12 +20,13 @@ public class DisplayController : MonoBehaviour {
     public GameObject lava;
     bool isBackgroundMove = false;
 
+    Sprite[] Blocks;
+
     // Use this for initialization
     void Start () {
         backgroundPanelNum = GameObject.Find("Canvas").transform.Find("Background").childCount;
         backgroundTransform = GameObject.Find("Canvas").transform.Find("Background").GetComponent<RectTransform>();
-        gameBoardRectTransform = GameObject.Find("GameBoard").GetComponent<RectTransform>();
-        initialGameBoardRectPosition = gameBoardRectTransform.localPosition;
+        //Blocks = Resources.Load("Sprites/Blocks", typeof(Sprite));
     }
 	
 	// Update is called once per frame
@@ -87,6 +88,7 @@ public class DisplayController : MonoBehaviour {
         GameObject.Find("GameBoardPanel").GetComponent<BlockArrayManager>().ShowContent();
     }
 
+    //자연블럭 생성 시 사용
     public void InstantiateNewModule(int posX, int posY)
     {
         GameObject newModule = Instantiate(moduleObject, gameBoardRectTransform);
@@ -217,5 +219,11 @@ public class DisplayController : MonoBehaviour {
                 allModuleObjects[i].GetComponent<Image>().color -= new Color(0, 0, 0, allModuleObjects[i].GetComponent<Image>().color.a);
             }
         }
+    }
+
+    public void SetGameBoardTransform()
+    {
+        gameBoardRectTransform = GameObject.Find("GameBoard").GetComponent<RectTransform>();
+        initialGameBoardRectPosition = gameBoardRectTransform.localPosition;
     }
 }

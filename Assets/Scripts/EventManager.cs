@@ -6,22 +6,25 @@ using UnityEngine.UI;
 
 public class EventManager : MonoBehaviour {
 
+    //유니티에서 설정
+    public float maxFallTime = 1.0f;             //블럭 추락 주기의 최초 시간 1.0초
+    public float minFallTime = 0.4f;
+    public float maxSinkTime = 6.0f;                //용암 상승 주기의 최초 시간
+    public float minSinkTime = 1.5f;             //용암 상승 주기의 최소 시간
+    public const int naturalBlockCycle = 15;           //자연블럭이 몇층 올라갈 때마다 생기는가
+    public float sinkStopTime = 5.0f;          //블럭 1줄 완성 시 용암이 정지하는 시간.
+
+
     float deltaTime;
-    float maxFallTime = 1.0f;             //블럭 추락 주기의 최초 시간 1.0초
-    float minFallTime = 0.4f;
-    float fallTime;
+    float fallTime;                     //게임 내에서 블럭이 1칸 떨어지는 데 걸리는 시간
     float fallCooltime = 0;
-    float sinkTime;
+    float sinkTime;                     //게임 내에서 용암이 1칸 올라오는 데 걸리는 시간
     float sinkCooltime = 0;
-    float maxSinkTime = 6.0f;                //용암 상승 주기의 최초 시간
-    float minSinkTime = 1.5f;             //용암 상승 주기의 최소 시간
     public int maxClimbHeight = 0;       //플레이어가 실제로 올라간 횟수
     public float heightScore = 0;        //플레이어가 받은 점수
     public int bonusClimbHeight = 0;     //용암과의 격차에 따른 보너스를 합산한 높이
-    const int naturalBlockCycle = 15;           //자연블럭이 몇층 올라갈 때마다 생기는가
     bool isCreateNaturalBlock = false;
     float sinkStopCooltime = 0;       //0이 아니면 0이하로 될때까지 용암 상승을 막음
-    float sinkStopTime = 5.0f;          //블럭 1줄 완성 시 용암이 정지하는 시간.
 
 	// Use this for initialization
 	void Start () {
@@ -40,12 +43,15 @@ public class EventManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        deltaTime = Time.deltaTime;
-        CalcFallTime();
-        BlockFallCycle();
-        CalcSinkTime();
-        BoardSinkCycle();
-        CreateNaturalBlock();
+        if(GameStart.isGame == true)
+        {
+            deltaTime = Time.deltaTime;
+            CalcFallTime();
+            BlockFallCycle();
+            CalcSinkTime();
+            BoardSinkCycle();
+            CreateNaturalBlock();
+        }
     }
 
     //블럭을 언제 1칸 떨어지게 할지 계산
@@ -57,7 +63,12 @@ public class EventManager : MonoBehaviour {
             fallCooltime = 0;
         }
         else
-            fallCooltime += deltaTime;
+        {
+            if(GameObject.Find("Canvas").GetComponent<UIManager>().isFall != true)
+            {
+                fallCooltime += deltaTime;
+            }
+        }
     }
 
     //용암 상승을 관리하는 메서드

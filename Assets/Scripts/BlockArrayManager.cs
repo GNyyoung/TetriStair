@@ -165,7 +165,7 @@ public class BlockArrayManager : MonoBehaviour {
     //gameArray 내에 저장된 block들을 보여주는 테스트용 메서드
     public void ShowContent()
     {
-        return;
+        //return;
         while(pointList.Count > 0)
         {
             Destroy(pointList[0]);

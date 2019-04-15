@@ -19,16 +19,21 @@ public class Lava : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        gapLavaToPlayer = (this.gameObject.GetComponent<RectTransform>().localPosition.y + 380) / 100;
-        GameObject.Find("LavaPosition").GetComponent<Text>().text = gapLavaToPlayer.ToString();
-        CheckFallLava();
-        startPosY = this.GetComponent<RectTransform>().localPosition.y;
+        if(GameStart.isGame == true)
+        {
+            gapLavaToPlayer = (this.gameObject.GetComponent<RectTransform>().localPosition.y + 380) / 100;
+            GameObject.Find("LavaPosition").GetComponent<Text>().text = gapLavaToPlayer.ToString();
+            CheckFallLava();
+            startPosY = this.GetComponent<RectTransform>().localPosition.y;
+        }
     }
 
+    //플레이어가 1칸 올라갈 때 용암 높이 내리는 용도로 사용
     public void UpdateLavaHeight(int directionVert)
     {
         GetComponent<RectTransform>().localPosition += Vector3.up * BlockArrayManager.ModuleDistance * directionVert;
     }
+    //용암을 실시간으로 올라오게 하는 데에 사용
     public void UpdateLavaHeight(float sinkTime, float deltaTime)
     {
         GetComponent<RectTransform>().localPosition += Vector3.up * BlockArrayManager.ModuleDistance / sinkTime * deltaTime;

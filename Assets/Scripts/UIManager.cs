@@ -6,10 +6,10 @@ using UnityEngine.SceneManagement;
 public class UIManager : MonoBehaviour {
 
     GameObject character;
-    public bool isAllowFall = true;
+    public bool isAllowFall = true;     //블럭이 내려간 후 새로 생성될 때까지 낙하 버튼이 눌리지 않게 함.
     int controllerType;
 
-    bool isFall = false;
+    public bool isFall = false;         //1칸 낙하할지 끝까지 낙하할지 판단하게 하는 변수
     float cooltime = 0;
     float durationTime = 0;
 
@@ -50,7 +50,7 @@ public class UIManager : MonoBehaviour {
 
         if(isFall == true)
         {
-            if (durationTime >= 0.2f && cooltime >= 1.3f)
+            if (durationTime >= 0.2f && cooltime >= 0.15f)
             {
                 GameObject.Find("GameBoardPanel").GetComponent<BlockController>().FallBlock();
                 cooltime = 0;
@@ -135,8 +135,10 @@ public class UIManager : MonoBehaviour {
     {
         if (Input.GetKeyDown(KeyCode.UpArrow))
             OnClickRotate();
-        else if (Input.GetKeyDown(KeyCode.DownArrow));
-            //OnClickBlockFall();
+        else if (Input.GetKeyDown(KeyCode.DownArrow))
+            OnButtonDownBlockFall();
+        else if (Input.GetKeyUp(KeyCode.DownArrow))
+            OnButtonUpBlockFall();
         else if (Input.GetKeyDown(KeyCode.LeftArrow))
             OnClickBlockMove(-1);
         else if (Input.GetKeyDown(KeyCode.RightArrow))
@@ -155,7 +157,7 @@ public class UIManager : MonoBehaviour {
         //    gameBoard.transform.GetChild(i);
         //}
         //GameObject.Find("GameOver").SetActive(false);
-
+        
         SceneManager.LoadScene("Game");
     }
 
@@ -179,5 +181,29 @@ public class UIManager : MonoBehaviour {
     public void OnClickExit()
     {
         Application.Quit();
+    }
+
+    public void OnClickDebugStop()
+    {
+        if(Time.timeScale == 1)
+        {
+            Time.timeScale = 0;
+        }
+        else
+        {
+            Time.timeScale = 1;
+        }
+    }
+
+    public void OnClickStartPanel()
+    {
+        GameObject.Find("Main Camera").GetComponent<GameStart>().StartGame();
+    }
+
+    public void ActiveUI()
+    {
+        GameObject.Find("Canvas").transform.Find("GameBoardPanel").gameObject.SetActive(true);
+        GameObject.Find("Canvas").transform.Find("BlockController").gameObject.SetActive(true);
+        GameObject.Find("Canvas").transform.Find("Lava").gameObject.SetActive(true);
     }
 }
