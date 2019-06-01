@@ -24,6 +24,9 @@ MonoBehaviour:
     width: 727
     height: 503
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> parent of 42ee535... 일시정지 버튼 이동
+=======
 >>>>>>> parent of 42ee535... 일시정지 버튼 이동
 =======
 >>>>>>> parent of 42ee535... 일시정지 버튼 이동
@@ -118,6 +121,9 @@ MonoBehaviour:
   vertical: 0
   controlID: 140
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> parent of 42ee535... 일시정지 버튼 이동
+=======
 >>>>>>> parent of 42ee535... 일시정지 버튼 이동
 =======
 >>>>>>> parent of 42ee535... 일시정지 버튼 이동
@@ -434,6 +440,9 @@ MonoBehaviour:
     width: 727
     height: 481
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> parent of 42ee535... 일시정지 버튼 이동
+=======
 >>>>>>> parent of 42ee535... 일시정지 버튼 이동
 =======
 >>>>>>> parent of 42ee535... 일시정지 버튼 이동
@@ -447,6 +456,7 @@ MonoBehaviour:
     m_VRangeLocked: 0
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     m_HBaseRangeMin: -540
     m_HBaseRangeMax: 540
     m_VBaseRangeMin: -960
@@ -454,11 +464,16 @@ MonoBehaviour:
 =======
 =======
 >>>>>>> parent of 42ee535... 일시정지 버튼 이동
+=======
+>>>>>>> parent of 42ee535... 일시정지 버튼 이동
     m_HBaseRangeMin: -130.5
     m_HBaseRangeMax: 130.5
     m_VBaseRangeMin: -232
     m_VBaseRangeMax: 232
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> parent of 42ee535... 일시정지 버튼 이동
+=======
 >>>>>>> parent of 42ee535... 일시정지 버튼 이동
 =======
 >>>>>>> parent of 42ee535... 일시정지 버튼 이동
@@ -489,6 +504,9 @@ MonoBehaviour:
     m_Scale: {x: 1, y: 1}
     m_Translation: {x: 363.5, y: 232}
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> parent of 42ee535... 일시정지 버튼 이동
+=======
 >>>>>>> parent of 42ee535... 일시정지 버튼 이동
 =======
 >>>>>>> parent of 42ee535... 일시정지 버튼 이동
@@ -509,6 +527,9 @@ MonoBehaviour:
       width: 727
       height: 464
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> parent of 42ee535... 일시정지 버튼 이동
+=======
 >>>>>>> parent of 42ee535... 일시정지 버튼 이동
 =======
 >>>>>>> parent of 42ee535... 일시정지 버튼 이동
@@ -518,7 +539,11 @@ MonoBehaviour:
   m_CurrentColorSpace: 0
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   m_LastWindowPixelSize: {x: 270, y: 516}
+=======
+  m_LastWindowPixelSize: {x: 727, y: 481}
+>>>>>>> parent of 42ee535... 일시정지 버튼 이동
 =======
   m_LastWindowPixelSize: {x: 727, y: 481}
 >>>>>>> parent of 42ee535... 일시정지 버튼 이동
@@ -591,10 +616,13 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     m_SelectedIDs: 1c380000
     m_LastClickedID: 14364
     m_ExpandedIDs: 4a83feff5cfbffff000000007827000048280000be370000
 =======
+=======
+>>>>>>> parent of 42ee535... 일시정지 버튼 이동
 =======
 >>>>>>> parent of 42ee535... 일시정지 버튼 이동
     m_SelectedIDs: 
